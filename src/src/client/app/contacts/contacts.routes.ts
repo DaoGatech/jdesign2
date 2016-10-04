@@ -3,7 +3,7 @@ import { ContactsComponent } from './index';
 
 export const ContactsRoutes: Route[] = [
   {
-    path: 'contacts',
+    path: 'Contacts',
     component: ContactsComponent
   }
 ];

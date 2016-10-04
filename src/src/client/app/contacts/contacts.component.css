@@ -22,23 +22,27 @@ ul {
 }
 
 .contributors {
-    position: absolute;
+    position: relative;
     bottom: 1em;
-    left: 1em;
-    display: inline;
+    margin-top: 28%;
 }
 
 .contributors ul {
     margin-left: 1em;
 }
 
+.contributors li {
+    display: inline;
+    padding: 1em;
+}
+
 .GT {
     vertical-align: text-top;
     display: inline-block;
-    margin-left: 5em;
 }
 
 .CRC {
     vertical-align: text-top;
     display: inline-block;
+    margin-right: 5em;
 }

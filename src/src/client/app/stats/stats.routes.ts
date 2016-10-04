@@ -3,7 +3,7 @@ import { StatsComponent } from './index';
 
 export const StatsRoutes: Route[] = [
   {
-    path: 'stats',
+    path: 'Stats',
     component: StatsComponent
   }
 ];

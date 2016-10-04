@@ -14,7 +14,7 @@ export class NavbarComponent {
 
 	test: string = "testing";
 	isActive: boolean = false;
-	navItems: Array<String> = ["events","stats","contacts"];
+	navItems: Array<String> = ["Events","Stats","Contacts"];
 	navItemsActive: Array<String>;
 
 

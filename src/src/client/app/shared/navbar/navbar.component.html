@@ -4,7 +4,7 @@
 		<!-- home page -->
  	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
 	    	<div class="img-container">
-	    		<div class="icon-img icon-home"></div>
+	    		<div class="icon-img icon-home" title="Home"></div>
 	    	</div>
 
 	    </a>
@@ -13,7 +13,7 @@
 		<div *ngFor="let item of navItems">
 		    <a [routerLink]=" '/' + item" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
 		    	<div class="img-container">
-					<div class="icon-img icon-{{item}}"></div>
+					<div class="icon-img icon-{{item}}" title="{{item}}"></div>
 				</div>
 	    	</a>
 		</div>

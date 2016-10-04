@@ -3,7 +3,7 @@ import { EventsComponent } from './index';
 
 export const EventsRoutes: Route[] = [
   {
-    path: 'events',
+    path: 'Events',
     component: EventsComponent
   }
 ];

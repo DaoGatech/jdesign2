@@ -28,15 +28,15 @@ nav a.router-link-active {
   background: url("./assets/icons/icon_home.png");
 
 }
-.icon-events {
+.icon-Events {
   background: url("./assets/icons/icon_events.png");
 }
 
-.icon-stats {
+.icon-Stats {
   background: url("./assets/icons/icon_stats.png");
 
 }
-.icon-contacts {
+.icon-Contacts {
   background: url("./assets/icons/icon_contacts.png");
 }
 .img-container {
