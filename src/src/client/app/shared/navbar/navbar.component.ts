@@ -14,12 +14,12 @@ export class NavbarComponent {
 
 	test: string = "testing";
 	isActive: boolean = false;
-	navItems: Array = ["events","stats","contacts"];
-	navItemsActive: Array;
+	navItems: Array<String> = ["events","stats","contacts"];
+	navItemsActive: Array<String>;
 
 
 	constructor(){
-		
+
 	}
 
 }
