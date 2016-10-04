@@ -3,10 +3,42 @@
   padding: 0 16px;
 }
 
+p {
+    font-size: 20px;
+    margin-bottom: 5em;
+}
+
 h2 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.005em;
   margin-bottom: 0;
   margin-top: 0.83em;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.contributors {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    display: inline;
+}
+
+.contributors ul {
+    margin-left: 1em;
+}
+
+.GT {
+    vertical-align: text-top;
+    display: inline-block;
+    margin-left: 5em;
+}
+
+.CRC {
+    vertical-align: text-top;
+    display: inline-block;
 }
