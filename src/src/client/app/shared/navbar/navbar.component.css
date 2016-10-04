@@ -1,7 +1,7 @@
 :host {
   border-color: #e1e1e1;
   border-style: solid;
-  border-width: 0 0 1px;
+  border-width: 0 0 2px;
   display: block;
   height: 48px;
 }
@@ -60,5 +60,5 @@ nav a.router-link-active {
 }
 
 .active {
-  border-bottom: 1px solid #6cacd6;
+  border-bottom: 2px solid #6cacd6;
 }
