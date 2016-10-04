@@ -15,11 +15,17 @@ export class NavbarComponent {
 	test: string = "testing";
 	isActive: boolean = false;
 	navItems: Array<String> = ["Events","Stats","Contacts"];
-	navItemsActive: Array<String>;
+	navItemActive: number = 0;
 
 
 	constructor(){
+		for(var i = 0; i < this.navItems.length; i++){
+			console.log(this.navItems[i]);
+		}
+	}
 
+	changeActive(item:number){
+		this.navItemActive = item;
 	}
 
 }

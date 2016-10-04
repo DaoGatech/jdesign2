@@ -2,21 +2,21 @@
 	<div class="route-container" >
 
 		<!-- home page -->
- 	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
-	    	<div class="img-container">
-	    		<div class="icon-img icon-home" title="Home"></div>
+ 	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(0)">
+	    	<div class="img-container" [ngClass]="{active: navItemActive == 0}">
+	    		<div class="icon-img icon-home" title="Home" ></div>
 	    	</div>
 
 	    </a>
 
 	    <!-- other pages -->
-		<div *ngFor="let item of navItems">
-		    <a [routerLink]=" '/' + item" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
-		    	<div class="img-container">
-					<div class="icon-img icon-{{item}}" title="{{item}}"></div>
-				</div>
-	    	</a>
+		<div *ngFor="let item of navItems; let i = index">
+	 	    <a [routerLink]="'/' + item" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(i+1)">
+		    	<div class="img-container" [ngClass]="{active: navItemActive == i+1}">
+		    		<div class="icon-img icon-{{item}}" title="{{item}}"></div>
+		    	</div>
+		    </a>
 		</div>
-
+    
     </div>
 </nav>
