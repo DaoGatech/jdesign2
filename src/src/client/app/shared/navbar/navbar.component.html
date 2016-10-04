@@ -1,9 +1,27 @@
 <nav>
- 	<a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}"> 
- 		<!-- <div> <img src="./assets/icons/icon_home.png" alt="Smiley face" height="42" width="42"></div> -->
- 		<div class="icon-img icon-home"></div>
-	</a>
- 	<a [routerLink]="['/events']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
-  		<div class="icon-img icon-events"></div>
- 	</a>
+
+	<div class="route-container">
+	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
+	    	<div class="img-container">
+	    		<div class="icon-img icon-home"></div>
+	    	</div>
+			
+	    </a>
+	    <a [routerLink]="['/events']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
+	    	<div class="img-container">
+				<div class="icon-img icon-events"></div>
+			</div>
+	    </a>
+	    <a [routerLink]="['/stats']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
+	    	
+			<div class="img-container">
+	    		<div class="icon-img icon-stats"></div>
+	    	</div>
+	    </a>
+	    <a [routerLink]="['/contacts']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
+	    	<div class="img-container">
+	    		<div class="icon-img icon-contacts"></div>
+	    	</div>
+	    </a>
+    </div>
 </nav>

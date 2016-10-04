@@ -4,7 +4,6 @@
   border-width: 0 0 1px;
   display: block;
   height: 48px;
-  padding: 0 16px;
 }
 
 nav a {
@@ -21,6 +20,10 @@ nav a.router-link-active {
   color: #106cc8;
 }
 
+.route-container {
+  max-width: 500px;
+}
+
 .icon-home {
   background: url("./assets/icons/icon_home.png");
 
@@ -29,12 +32,29 @@ nav a.router-link-active {
   background: url("./assets/icons/icon_events.png");
 }
 
+.icon-stats {
+  background: url("./assets/icons/icon_stats.png");
+
+}
+.icon-contacts {
+  background: url("./assets/icons/icon_contacts.png");
+}
+.img-container {
+    height: 48px;
+    width: 25%;
+    float: left;
+    position: relative;
+}
+
 .icon-img {
   height: 48px;
   width: 48px;
   background-size: contain;
   background-repeat: no-repeat;
-  float: left;
   border-bottom: 1px solid blue;
-  margin: 0 15px 0 15px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
