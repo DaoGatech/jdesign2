@@ -1,27 +1,24 @@
 <nav>
+	<div class="route-container" >
 
-	<div class="route-container">
-	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
+		<!-- home page -->
+ 	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
 	    	<div class="img-container">
 	    		<div class="icon-img icon-home"></div>
 	    	</div>
-			
+
 	    </a>
-	    <a [routerLink]="['/events']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
-	    	<div class="img-container">
-				<div class="icon-img icon-events"></div>
-			</div>
-	    </a>
-	    <a [routerLink]="['/stats']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
-	    	
-			<div class="img-container">
-	    		<div class="icon-img icon-stats"></div>
-	    	</div>
-	    </a>
-	    <a [routerLink]="['/contacts']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
-	    	<div class="img-container">
-	    		<div class="icon-img icon-contacts"></div>
-	    	</div>
-	    </a>
+
+	    <!-- other pages -->
+		<div *ngFor="let item of navItems">
+		    <a [routerLink]=" '/' + item" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}">
+		    	<div class="img-container">
+					<div class="icon-img icon-{{item}}"></div>
+				</div>
+	    	</a>
+		</div>
+
+
+
     </div>
 </nav>

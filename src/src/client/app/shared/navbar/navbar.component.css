@@ -51,10 +51,13 @@ nav a.router-link-active {
   width: 48px;
   background-size: contain;
   background-repeat: no-repeat;
-  border-bottom: 1px solid blue;
   position: absolute;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
+}
+
+.active {
+  border-bottom: 1px solid lightblue;
 }
