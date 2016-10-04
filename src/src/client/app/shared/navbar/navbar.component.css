@@ -11,12 +11,30 @@ nav a {
   color: #8f8f8f;
   font-size: 14px;
   font-weight: 500;
-  line-height: 48px;
-  margin-right: 20px;
+  /*line-height: 48px;*/
+  /*margin-right: 20px;*/
   text-decoration: none;
   vertical-align: middle;
 }
 
 nav a.router-link-active {
   color: #106cc8;
+}
+
+.icon-home {
+  background: url("./assets/icons/icon_home.png");
+
+}
+.icon-events {
+  background: url("./assets/icons/icon_events.png");
+}
+
+.icon-img {
+  height: 48px;
+  width: 48px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  float: left;
+  border-bottom: 1px solid blue;
+  margin: 0 15px 0 15px;
 }
