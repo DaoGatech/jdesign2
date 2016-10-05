@@ -44,3 +44,8 @@ li:last-child {
 span {
     float: right;
 }
+
+todaydate {
+	float: left;
+	background-color: green;
+}
