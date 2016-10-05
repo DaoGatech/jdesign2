@@ -28,9 +28,19 @@ p{
 
 .container{
 	height: 50%;
-    margin-top: 100px;
-    max-width: 500px;
-    float: left;
-    width: 100%;
+  margin-top: 100px;
+  max-width: 500px;
+  float: left;
+  width: 100%;
 }
 
+.breakdown {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.block {
+  overflow: hidden;
+  -webkit-transition: height .25s;
+  transition: height .25s;
+}

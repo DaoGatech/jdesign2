@@ -2,21 +2,20 @@
 
 <p>Few dropdowns for options and a graph</p>
 
-<div class="dropdown">
-	<div class="primary-btn-container">
-		<button>Area</button>
-		<div class="dropdown-content">
-			<p>Indoor Pool</p>
-			<p>Basketball Court</p>
-			<p>Outdoor Pool</p>
-		</div>
-	</div>
-	<div class="btn-container">
-		<div class="secondary-btn-container">
-			<button>Month</button>
-			<button>Weekdays</button>
-			<button>Late Night</button>
-		</div>
-	</div>
+<div class="primary-btn-container">
+	<select>
+		<option *ngFor="let area of statsAreas">{{area}}</option>
+	</select>
+</div>
 
+<div class="secondary-btn-container">
+	<select>
+		<option *ngFor="let month of statsMonths">{{month}}</option>
+	</select>
+	<select>
+		<option *ngFor="let day of statsDays">{{day}}</option>
+	</select>
+	<select>
+		<option *ngFor="let time of statsTimes">{{time}}</option>
+	</select>
 </div>

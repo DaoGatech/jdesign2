@@ -10,4 +10,5 @@ import { NameListService } from '../shared/name-list/index';
   exports: [HomeComponent],
   providers: [NameListService]
 })
+
 export class HomeModule { }
