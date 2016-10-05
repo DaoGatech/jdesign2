@@ -13,12 +13,12 @@ import { NameListService } from '../shared/index';
 
 export class HomeComponent implements OnInit {
 
+  height = 0;
+/*
   newName: string = '';
   errorMessage: string;
   names: any[] = [];
-
-  //collapse content
-  isCollapsed:boolean = true;
+*/
 
   /**
    * Creates an instance of the HomeComponent with the injected
