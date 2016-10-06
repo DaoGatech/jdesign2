@@ -13,7 +13,9 @@ import { NameListService } from '../shared/index';
 
 export class HomeComponent implements OnInit {
 
-  height = 0;
+  height: number = 0;
+  breakdownAreas: Array<String> = ["Indoor Pool", "Basketball Court", "Outdoor Pool","Indoor Pool", "Basketball Court", "Outdoor Pool"];
+
 /*
   newName: string = '';
   errorMessage: string;
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit {
   /**
    * Get the names OnInit
    */
+
   ngOnInit() {
   }
 

@@ -2,20 +2,23 @@
 
 <p>Few dropdowns for options and a graph</p>
 
-<div class="primary-btn-container">
-	<select>
-		<option *ngFor="let area of statsAreas">{{area}}</option>
-	</select>
-</div>
+<div class="btn-container">
 
-<div class="secondary-btn-container">
-	<select>
-		<option *ngFor="let month of statsMonths">{{month}}</option>
-	</select>
-	<select>
-		<option *ngFor="let day of statsDays">{{day}}</option>
-	</select>
-	<select>
-		<option *ngFor="let time of statsTimes">{{time}}</option>
-	</select>
+	<div class="primary-btn-container">
+		<select>
+			<option *ngFor="let area of statsAreas">{{area}}</option>
+		</select>
+	</div>
+
+	<div class="secondary-btn-container">
+		<select>
+			<option *ngFor="let range of statsRange">{{range}}</option>
+		</select>
+		<select>
+			<option *ngFor="let day of statsDays">{{day}}</option>
+		</select>
+		<select>
+			<option *ngFor="let time of statsTimes">{{time}}</option>
+		</select>
+	</div>
 </div>

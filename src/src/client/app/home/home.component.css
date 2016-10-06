@@ -37,10 +37,31 @@ p{
 .breakdown {
   margin-top: 100px;
   text-align: center;
+  position: absolute;
+  bottom: 30px;
+  left:0;
+  width: 100%;
+  max-width: 500px;
+  height: 40px;
+
+}
+
+.breakdown button {
+  width: 90%;
 }
 
 .block {
   overflow: hidden;
   -webkit-transition: height .25s;
   transition: height .25s;
+}
+
+.breakdown-block{
+  width: 48%;
+  height:100px;
+  position: relative;
+  float:left;
+  background: lightblue;
+  margin: 1%;
+  padding-bottom: 48%;
 }

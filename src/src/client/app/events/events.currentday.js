@@ -13,4 +13,4 @@ setTimeout(function(){
 			events[i].style.backgroundColor = "green";
 		}
 	}
-},4001);
+},2001);

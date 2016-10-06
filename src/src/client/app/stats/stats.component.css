@@ -19,11 +19,24 @@ button{
 	padding:0;
 }
 
+.btn-container {
+	position: relative;
+    width: 325px;
+}
+
 .primary-btn-container{
+	float:left;
+	width: 100%;
+}
+
+.primary-btn-container select{
+	width: 100%;
+}
+
+.primary-btn-container select{
 	margin-bottom: 20px;
 	float:left;
 }
-
 
 .secondary-btn-container {
 	width: 100%;
@@ -31,20 +44,22 @@ button{
 	float:left;
 
 }
-.secondary-btn-container button{
-	width: 30%;
-	margin-right: 3.33%;
+
+.secondary-btn-container select:last-child{
+	margin-right: 0;
+
 }
 
-.secondary-btn-container button:last-child{
-	right: 0;
-	margin-right: 0;
-	position: absolute;
-}
+
+
 
 select {
-	background-color: #428bca;
-	color: white;
-	font-weight: bold;
-	height: 30px;
+    background-color: #428bca;
+    color: white;
+    font-weight: bold;
+    height: 38px;
+    border: none;
+    margin-right: 3.33%;
+    width: 30%;
+    font-size: 13px;
 }

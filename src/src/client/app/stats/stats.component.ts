@@ -12,7 +12,8 @@ import { Component } from '@angular/core';
 
 export class StatsComponent {
     statsAreas: Array<String> = ["Indoor Pool", "Basketball Court", "Outdoor Pool"];
-    statsMonths: Array<String> = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    // statsMonths: Array<String> = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    statsRange: Array<String> = ["24 hours", "Week", "Month"]
     statsDays: Array<String> = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     statsTimes: Array<String> = ["Morning", "Afternoon", "Evening", "Late Night"];
 }
