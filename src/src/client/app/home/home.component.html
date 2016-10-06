@@ -15,7 +15,7 @@
         <div
           class="card card-block card-header block" [style.height]="height + 'px'" #el>
           <div class="well well-lg">
-            <div *ngFor="let area of breakdownAreas" class="breakdown-block">
+            <div *ngFor="let area of breakdownAreas;let i = index" class="breakdown-block" [ngStyle]="{'border-top' : i == 0 || i == 1 ? '1px solid lightgrey' : 'none'}">
                 {{area}}
             </div>
           </div>

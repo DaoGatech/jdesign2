@@ -48,7 +48,10 @@ p{
 
 .breakdown button {
   width: 90%;
+  margin-bottom: 20px;
 }
+
+
 
 .block {
   overflow: hidden;
@@ -57,11 +60,15 @@ p{
 }
 
 .breakdown-block{
-  width: 48%;
+  width: 50%;
   height:100px;
   position: relative;
   float:left;
-  background: lightblue;
-  margin: 1%;
-  padding-bottom: 48%;
+  border-bottom: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+  padding-bottom: 50%;
+}
+
+.breakdown-block-container{
+  margin-top: 20px;
 }
