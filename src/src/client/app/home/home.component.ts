@@ -13,7 +13,7 @@ import { NameListService } from '../shared/index';
 
 export class HomeComponent implements OnInit {
 
-  height: number = 0;
+  height: number;
   breakdownAreas: Array<String> = ["Indoor Pool", "Basketball Court", "Outdoor Pool","Indoor Pool", "Basketball Court", "Outdoor Pool"];
 
 /*
@@ -35,6 +35,23 @@ export class HomeComponent implements OnInit {
    */
 
   ngOnInit() {
+    this.height = 0;
+  }
+
+  scrollDown() {
+    var div = document.getElementById('el');
+    if (div.style.display == 'none') {
+        div.style.display = 'block';
+    } else {
+        div.style.display = 'none';
+    }
+    // if (this.height == 0) {
+    //   this.height = document.getElementById("el").scrollHeight;
+    // } else {
+    //   this.height = 0;
+    // }
+    document.getElementById('breakdown').scrollIntoView({behavior: 'smooth'});
+    //this.height = this.height ? 0 : document.getElementById("el").scrollHeight;
   }
 
   /**
