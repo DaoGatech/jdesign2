@@ -14,20 +14,20 @@ h1 {
 }
 
 h4 {
-	text-align: center;
-	font-weight: normal;
+    text-align: center;
+    font-weight: normal;
 }
 
 
 p{
-	font-size: 30px;
-	text-align: center;
-	margin:0;
-	margin-bottom: 30px;
+    font-size: 30px;
+    text-align: center;
+    margin:0;
+    margin-bottom: 30px;
 }
 
 .container{
-	height: 50%;
+    height: 50%;
   margin-top: 100px;
   max-width: 500px;
   float: left;
@@ -52,6 +52,9 @@ p{
 }
 
 
+.breakdown-block-container{
+  margin-top: 20px;
+}
 
 .block {
   overflow: hidden;
@@ -69,6 +72,27 @@ p{
   padding-bottom: 50%;
 }
 
-.breakdown-block-container{
-  margin-top: 20px;
+.block-title{
+  margin-top:40%;
+}
+
+.block-title p{
+  font-size: 12px;
+}
+
+.block-update {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    font-size: 14px;
+}
+
+.block-pcnt {
+    background: green;
+    position: absolute;
+    height: 80%;
+    width: 30px;
+    left:0;
+    bottom: 0;
 }
