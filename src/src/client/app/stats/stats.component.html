@@ -5,8 +5,11 @@
 <div class="btn-container">
 
 	<div class="primary-btn-container">
-		<select>
+<!-- 		<select>
 			<option *ngFor="let area of statsAreas">{{area}}</option>
+		</select> -->
+		<select [ngModel]="selectedDevice" (ngModelChange)="onChange($event)" name="sel2">
+    		<option [value]="i" *ngFor="let i of statsAreas">{{i}}</option>
 		</select>
 	</div>
 
@@ -21,4 +24,7 @@
 			<option *ngFor="let time of statsTimes">{{time}}</option>
 		</select>
 	</div>
+</div>
+<div>
+
 </div>

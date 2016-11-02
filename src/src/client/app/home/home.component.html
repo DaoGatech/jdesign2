@@ -12,7 +12,20 @@
       </button>
       <div class="el" style="display: none" id="el">
         <div *ngFor="let area of breakdownAreas;let i = index" class="breakdown-block" [ngStyle]="{'border-top' : i == 0 || i == 1 ? '1px solid lightgrey' : 'none'}">
-            {{area}}
+
+          <div class="block-title">
+              {{area}}
+              <p>
+
+              </p>  
+          </div>
+          <div class="block-update"> 
+            50/75
+          </div>
+
+          <div class="block-pcnt"> 
+
+          </div>
         </div>
       </div>
     </div>
