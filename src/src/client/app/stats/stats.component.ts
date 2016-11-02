@@ -19,9 +19,9 @@ export class StatsComponent {
 
 
   	selectedDevice = 'Indoor Pool';
-  	onChange(newValue) {
+  	onChange(newValue: any) {
     	console.log(newValue);
-    
+
     	this.selectedDevice = newValue;
-	} 
+	}
 }
