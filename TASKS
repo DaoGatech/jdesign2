@@ -1,0 +1,22 @@
+Jack - Talk to OIT
+	CHECKSUMS/Or read ‘LAST MODIFIED’ property?
+	Run scripts in bg if file not in same place (curl/wget)
+	Check if can run shell cmds
+
+Them - 
+Weekly Events listed in Excel
+Max Occupancy
+Creating plesk repo
+
+Everyone - 
+Read xls/csv file and create graph?
+	Check if Angular can do everything?
+	Use Python to convert xls to json and make Angular read?
+Backup
+	Rename file to File_Backup?
+		Reading off this
+	Check if File exists
+		If not, haven’t pushed new very
+		If yes, rename to Backup
+
+May not be hourly updates. Hourly headcount but not file updates
