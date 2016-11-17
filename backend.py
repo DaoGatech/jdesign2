@@ -3,19 +3,21 @@ from datetime import datetime, date, time
 
 jsonFilename = 'crcJson.json'
 dateFilename = 'date.json'
-currentFilename = 'current.json'
+activeFilename = 'active.json'
 
 try:
-    with open( jsonFilename ) as thisd:        
-        Areas = json.load( thisd )
+    with open( jsonFilename ) as areasfile:        
+        Areas = json.load( areasfile )
 except IOError:
     Areas = {}
 
 try:
-    with open( currentFilename ) as moms:        
-        currAreas = json.load( moms )
+    with open( activeFilename ) as activefile:        
+        activeAreas = json.load( activefile )
 except IOError:
-    currAreas = {}
+    activeAreas = {}
+
+
 
 #read excel file and build data structure (starting with Areas)
 def pull():
@@ -23,36 +25,39 @@ def pull():
     df = xl.parse( "Survey1" )
     lastCheck = datetime( 1970, 1, 1 )
     rowDate = datetime( 1970, 1, 1 )
+
     try:
         with open( dateFilename, 'r' ) as fp:
             lastCheck = fp.read()[1:-1]
             lastCheck = datetime.strptime( lastCheck, '%M-%H-%d-%m-%Y' )
     except IOError:
         lastCheck = datetime( 1970, 1, 1 )
+
     rows = df.iterrows()
-    #skip headers, names of columns aren't necessary
-    rows.next()
+    rows.next()                                           #skip 1st row, names of columns aren't necessary
+    
     for row in rows:
-        columns = row[1].iteritems()
+        columns = row[1].iteritems()                      #useful info happens to be in [1] index
         rowDate = columns.next()
-        fuckit = False
+        skip = False
         time = columns.next()
-        if not isinstance(time[1], unicode) or not isinstance(rowDate[1], datetime):
-            fuckit = True
-        if not fuckit and isRowValid( rowDate[1], time[1], lastCheck ):
-        #add crc area or append to it
+        
+        if isRowValid( rowDate[1], time[1], lastCheck ):       
           for cell in columns:
+          	#add crc area or append to it
             if cell[0] not in Areas.keys():
                 Areas[cell[0]] = {}
             else:
-                day = parsedate( rowDate[1] )
+                weekday = parsedate( rowDate[1] )
                 daydict = Areas[cell[0]]
+                
                 #add day or append to it
-                if day not in daydict.keys():
-                    daydict[day] = {}
+                if weekday not in daydict.keys():
+                    daydict[weekday] = {}
                 else:
-                    lightdict = daydict[day]
+                    lightdict = daydict[weekday]
                     light = getLight( time[1] )
+                    
                     #add time of day or append to it based on time
                     if light not in lightdict.keys():
                         lightdict[light] = []
@@ -61,24 +66,28 @@ def pull():
                         time_and_occs.append( ( time[1], cell[1] ) )
 
 
-    with open(dateFilename, 'w') as fp:
-        json.dump(addStringToDT(rowDate[1], time[1]).strftime("%M-%H-%d-%m-%Y"), fp)
-    with open(jsonFilename, 'w') as fp:
-      json.dump(Areas, fp)
+    with open( dateFilename, 'w' ) as fp:
+        json.dump(addStringToDT( rowDate[1], time[1]).strftime( "%M-%H-%d-%m-%Y" ), fp )
+    
+    with open( jsonFilename, 'w' ) as fp:
+      json.dump( Areas, fp )
 
 
 #get usable date from excel format
 def parsedate( date ):
-    return date.strftime('%A')
+    return date.strftime( '%A' )
 
 #get phase of day via time of day
 def getLight( light ):
-    time = light.split(':')
-    hours = int(time[0])
-    if (time[1][-2] == 'p'):
+    time = light.split( ':' )
+    hours = int( time[0] )
+    
+    if ( time[1][-2] == 'p' ):
       hours += 12
+    
     mins = time[1][0:2]
-    hours += float(mins)/60
+    hours += float( mins )/60
+    
     if hours < 12:
       return 'Morning'
     elif hours < 17:
@@ -88,20 +97,24 @@ def getLight( light ):
     else:
       return 'Night'
 
+#determine if row in excel file is not from the future or already been checked
 def isRowValid( rowdate, timestring, lastcheck ):
-    newRow = ( addStringToDT( rowdate, timestring ) - lastcheck ).total_seconds()
-    notTooNewRow = ( addStringToDT( rowdate, timestring ) - datetime.now() ).total_seconds()
+    return  (   isinstance( timestring, unicode ) and 
+                isinstance( rowdate, datetime ) and
+                ( addStringToDT( rowdate, timestring ) - lastcheck ).total_seconds() > 0 and
+                ( addStringToDT( rowdate, timestring ) - datetime.now() ).total_seconds() <= 0 )
 
-    return newRow > 0 and notTooNewRow <= 0
-
+#return a datetime with time data given a datetime object without it and a time formatted as a string
 def addStringToDT( rowdate, timestring ):
-    newTime = timestring.split(':')
-    hours = int(newTime[0])
+    splitTime = timestring.split(':')
+    hours = int(splitTime[0])
+    mins = int(splitTime[1][0:2])
+    
     if hours == 12:
         hours = 0
-    if (newTime[1][-2] == 'p'):
+    
+    if (splitTime[1][-2] == 'p'):
         hours += 12
-    mins = int(newTime[1][0:2])
 
     return datetime.combine( rowdate, time( hours, mins ) )
 
