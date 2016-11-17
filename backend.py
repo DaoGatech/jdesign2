@@ -97,7 +97,7 @@ def getLight( light ):
     else:
       return 'Night'
 
-#determine if row in excel file is not from the future or already been checked
+#determine if row in excel file is not from the future, has already been checked, or using bad data types
 def isRowValid( rowdate, timestring, lastcheck ):
     return  (   isinstance( timestring, unicode ) and 
                 isinstance( rowdate, datetime ) and
