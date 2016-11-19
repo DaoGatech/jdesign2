@@ -4,19 +4,29 @@
 		<!-- home page -->
  	    <a [routerLink]="['/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(0)">
 	    	<div class="img-container" [ngClass]="{active: navItemActive == 0}">
-	    		<div class="icon-img icon-home" title="Home" ></div>
+	    		<div class="icon-img icon-home" title="Home - Shows current occupancy in the CRC and a breakdown of different sections in the CRC" ></div>
 	    	</div>
+	    </a>
 
+	    <a [routerLink]="['/Events']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(1)">
+	    	<div class="img-container" [ngClass]="{active: navItemActive == 1}">
+	    		<div class="icon-img icon-Events" title="Events - Shows special events hosted by the CRC weekly" ></div>
+	    	</div>
+	    </a>
+
+	    <a [routerLink]="['/Stats']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(2)">
+	    	<div class="img-container" [ngClass]="{active: navItemActive == 2}">
+	    		<div class="icon-img icon-Stats" title="Statistics - Shows history of occupancy throughout the CRC" ></div>
+	    	</div>
+	    </a>
+
+	    <a [routerLink]="['/Contacts']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(3)">
+	    	<div class="img-container" [ngClass]="{active: navItemActive == 3}">
+	    		<div class="icon-img icon-Contacts" title="Contacts - Shows description of the site, contact information, and developer names" ></div>
+	    	</div>
 	    </a>
 
 	    <!-- other pages -->
-		<div *ngFor="let item of navItems; let i = index">
-	 	    <a [routerLink]="'/' + item" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" (click)="changeActive(i+1)">
-		    	<div class="img-container" [ngClass]="{active: navItemActive == i+1}">
-		    		<div class="icon-img icon-{{item}}" title="{{item}}"></div>
-		    	</div>
-		    </a>
-		</div>
-    
+
     </div>
 </nav>
