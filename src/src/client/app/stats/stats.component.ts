@@ -7,19 +7,20 @@ declare var moment: any;
   moduleId: module.id,
   selector: 'sd-stats',
   templateUrl: 'stats.component.html',
-  styleUrls: ['stats.component.css']
+  styleUrls: ['stats.component.css'],
+  moduleId: module.id
 })
 
 export class StatsComponent implements OnInit {
 
     // default times
     timesDetailMain: Object = {
-      "Morning" : [moment("5:30AM", "HH:mmA"), moment("10:00AM", "HH:mmA")],
-      "Midday" : [moment("10:00AM", "HH:mmA"),moment("3:00PM", "HH:mmA")],
-      "Afternoon" : [moment("3:00PM", "HH:mmA"),moment("8:00PM", "HH:mmA")],
-      "Night" : [moment("8:00PM", "HH:mmA"),moment("11:59PM", "HH:mmA")]
+      "Morning" : [moment("5:30AM", "HH:mmA"), moment("12:00PM", "HH:mmA")],
+      "Afternoon" : [moment("12:00PM", "HH:mmA"),moment("5:00PM", "HH:mmA")],
+      "Evening" : [moment("5:00PM", "HH:mmA"),moment("9:00PM", "HH:mmA")],
+      "Night" : [moment("9:00PM", "HH:mmA"),moment("11:59PM", "HH:mmA")]
     };
-    timesMain: Array<String> = ["Morning", "Midday", "Afternoon", "Night"];
+    timesMain: Array<String> = ["Morning", "Afternoon", "Evening", "Night"];
 
 
     // "stats" bound to html select values
@@ -47,7 +48,7 @@ export class StatsComponent implements OnInit {
         moment("7:07AM", "HH:mmA"), 
         moment("8:03AM", "HH:mmA"), 
         moment("9:33AM", "HH:mmA"), 
-        moment("10:43AM", "HH:mmA"), 
+        moment("12:00PM", "HH:mmA"), 
     ];
 
     randomData2: Array<number> = [10, 20, 25, 30, 27, 12, 3];
@@ -58,8 +59,22 @@ export class StatsComponent implements OnInit {
 
     // default to monday morning
     minTime = moment("5:30AM", "HH:mmA");
-    maxTime = moment("9:00AM", "HH:mmA");
+    maxTime = moment("11:59AM", "HH:mmA");
 
+
+
+    // checkboxes
+      options = [
+        {name:'OptionA', value:'1', checked:true},
+        {name:'OptionB', value:'2', checked:false},
+        {name:'OptionC', value:'3', checked:true}
+      ]
+
+      get selectedOptions() { // right now: ['1','3']
+        return this.options
+                  .filter(opt => opt.checked)
+                  .map(opt => opt.value)
+      }
     ngOnInit() {
         this.createChart();
 
@@ -75,45 +90,49 @@ export class StatsComponent implements OnInit {
         if (type == "Days") {
             this.selectedDays = event;
             var copy: any = null;
+            var copy2: any = null;
             // sat and sun dont have morning values, so remove
             // morning from dropdown
-            if (this.selectedDays === "Saturday" || this.selectedDays === "Sunday" ) {
-              // must create a DEEP copy
-              copy = Object.assign({}, this.timesMain);
-              copy = Object.keys(copy).map(function (key) { return copy[key]; });
-              var index = copy.indexOf("Morning");
-              copy.splice(index, 1);
-              this.statsTimes = copy;
+            if (this.selectedDays === "Sunday" ) {
+                // remove morning option
+                copy = Object.assign({}, this.timesMain);
+                copy = Object.keys(copy).map(function (key) { return copy[key]; });
+                var index = copy.indexOf("Morning");
+                copy.splice(index, 1);
+                
+                // remove morning time period
+                copy2 = Object.assign({}, this.timesDetailMain);
+                delete copy2["Morning"];
+                // modify time periods
+                copy2["Night"] = [moment("9:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
+                copy2["Afternoon"] = [moment("12:30PM", "HH:mmA"),moment("5:00PM", "HH:mmA")];
+                
+            } else if (this.selectedDays === "Saturday" ){
+                copy = this.timesMain;
+
+                copy2 = Object.assign({}, this.timesDetailMain);
+                copy2["Morning"] = [moment("9:00AM", "HH:mmA"),moment("12:00PM", "HH:mmA")];
+                copy2["Night"] = [moment("9:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
 
             // else any other day has morning value
+            } else if (this.selectedDays === "Friday" ){
+                copy = this.timesMain;
+
+                copy2 = Object.assign({}, this.timesDetailMain);
+                copy2["Night"] = [moment("8:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
+
             } else {
-              this.statsTimes = this.timesMain;
-              this.statsTimesDetail = this.timesDetailMain;
+              copy = this.timesMain;
+              copy2 = this.timesDetailMain;
             }
+
+            this.statsTimes = copy;
+            this.statsTimesDetail = copy2;
+
             // reset time to first value in array
             this.selectedTimes = this.statsTimes[0];
         } else if (type == "Times") {
             this.selectedTimes = event;
-            // hours are diff for each day
-            var copy = null;
-            if (this.selectedDays === "Friday") {
-                copy = Object.assign({}, this.timesDetailMain);
-                copy["Night"] = [moment("8:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
-            } else if (this.selectedDays === "Saturday") {
-                copy = Object.assign({}, this.timesDetailMain);
-                delete copy["Morning"];
-                copy["Night"] = [moment("8:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
-            } else if (this.selectedDays === "Sunday") {
-                copy = Object.assign({}, this.timesDetailMain);
-                delete copy["Morning"];
-                copy["Night"] = [moment("8:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
-                copy["Midday"] = [moment("12:00PM", "HH:mmA"),moment("2:00PM", "HH:mmA")];
-            } else {
-                copy = this.timesDetailMain;
-            }
-
-            this.statsTimesDetail = copy;
-
         } else if (type == "Range") {
             this.selectedRange = event;
         } else {

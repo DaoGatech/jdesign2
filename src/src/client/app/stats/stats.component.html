@@ -24,6 +24,21 @@
 			<option *ngFor="let time of statsTimes">{{time}}</option>
 		</select>
 	</div>
+<!-- 	<div class="secondary-btn-container">
+		<div class="form-group">
+		    <label for="options">Options:</label>
+		    <div *ngFor="let option of options">
+		        <label>
+		            <input type="checkbox"
+		                   name="options"
+		                   value="{{option.value}}"
+		                   [(ngModel)]="option.checked"/>
+		            {{option.name}}
+		        </label>
+		    </div>
+		</div>
+	</div> -->
+
 </div>
 
 <div class="stats-chart">
