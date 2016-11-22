@@ -33,10 +33,10 @@ export class StatsComponent implements OnInit {
                   label: this.title,
                   data: this.randomData,
                   backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(0, 85, 190, 0.2)',
                       ],
                   borderColor: [
-                      'rgba(255,99,132,1)',
+                      'rgba(68, 85, 255, 1)',
                       ],
                   borderWidth: 3
               }]

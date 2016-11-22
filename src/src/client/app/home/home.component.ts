@@ -1,5 +1,4 @@
 import { Component, OnInit,  } from '@angular/core';
-import { NameListService } from '../shared/index';
 
 /**
  * This class represents the lazy loaded HomeComponent.
