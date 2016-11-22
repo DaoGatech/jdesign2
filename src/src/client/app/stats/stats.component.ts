@@ -13,7 +13,7 @@ declare var moment: any;
 
 export class StatsComponent implements OnInit {
 
-    // default times
+    // DEFAULT time periods and days (important later on)
     timesDetailMain: Object = {
       "Morning" : [moment("5:30AM", "HH:mmA"), moment("12:00PM", "HH:mmA")],
       "Afternoon" : [moment("12:00PM", "HH:mmA"),moment("5:00PM", "HH:mmA")],
@@ -29,10 +29,10 @@ export class StatsComponent implements OnInit {
     statsRange: Array<String> = ["24 hours", "Week", "Month"]
     statsDays: Array<String> = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     
-    // statsTimes affects what will show up in statsTimesDetail
-    // set statsTimes and statsTimesDetail default values here
+    // statsTimes affects what will show up in graphTimesDetail
+    // set statsTimes and graphTimesDetail default values here
     statsTimes: Array<String> = this.timesMain;
-    statsTimesDetail: Object = this.timesDetailMain;
+    graphTimesDetail: Object = this.timesDetailMain;
 
     // "selected" bound to the dropdowns
     selectedRange: String = this.statsRange[0];
@@ -89,8 +89,11 @@ export class StatsComponent implements OnInit {
     chartOnChange(event: any, type: any) {
         if (type == "Days") {
             this.selectedDays = event;
+
+            // used to set the time period and day at the end of this function
             var copy: any = null;
             var copy2: any = null;
+
             // sat and sun dont have morning values, so remove
             // morning from dropdown
             if (this.selectedDays === "Sunday" ) {
@@ -108,28 +111,35 @@ export class StatsComponent implements OnInit {
                 copy2["Afternoon"] = [moment("12:30PM", "HH:mmA"),moment("5:00PM", "HH:mmA")];
                 
             } else if (this.selectedDays === "Saturday" ){
+                // set time period options to default
                 copy = this.timesMain;
 
+                // modify time periods
                 copy2 = Object.assign({}, this.timesDetailMain);
                 copy2["Morning"] = [moment("9:00AM", "HH:mmA"),moment("12:00PM", "HH:mmA")];
                 copy2["Night"] = [moment("9:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
 
-            // else any other day has morning value
+
             } else if (this.selectedDays === "Friday" ){
+                // set time period options to default
                 copy = this.timesMain;
 
+                // modify time periods
                 copy2 = Object.assign({}, this.timesDetailMain);
                 copy2["Night"] = [moment("8:00PM", "HH:mmA"),moment("10:00PM", "HH:mmA")];
 
             } else {
-              copy = this.timesMain;
-              copy2 = this.timesDetailMain;
+                // else set time period and days to default
+                copy = this.timesMain;
+                copy2 = this.timesDetailMain;
             }
 
+            // statsTimes is bound to html select time periods "morning, afternoon, etc.."
             this.statsTimes = copy;
-            this.statsTimesDetail = copy2;
+            // graphTimesDetail bound to the chart x axis
+            this.graphTimesDetail = copy2;
 
-            // reset time to first value in array
+            // reset time to first value in html select time periods
             this.selectedTimes = this.statsTimes[0];
         } else if (type == "Times") {
             this.selectedTimes = event;
@@ -139,8 +149,9 @@ export class StatsComponent implements OnInit {
             console.log("Type not recognized");
         }
 
-        this.minTime = this.statsTimesDetail[this.selectedTimes][0];
-        this.maxTime = this.statsTimesDetail[this.selectedTimes][1];
+        this.minTime = this.graphTimesDetail[this.selectedTimes][0];
+        this.maxTime = this.graphTimesDetail[this.selectedTimes][1];
+        // must redraw chart after any change in dropdown options
         this.createChart();
 
 
@@ -149,8 +160,8 @@ export class StatsComponent implements OnInit {
     createChart(){
 
       // reset tick to match the selected time
-      this.minTime = this.statsTimesDetail[this.selectedTimes][0]
-      this.maxTime = this.statsTimesDetail[this.selectedTimes][1]
+      this.minTime = this.graphTimesDetail[this.selectedTimes][0]
+      this.maxTime = this.graphTimesDetail[this.selectedTimes][1]
       var ctx = document.getElementById("myChart");
       var myChart = new Chart(ctx, {
           type: 'line',
