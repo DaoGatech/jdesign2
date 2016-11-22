@@ -76,6 +76,9 @@ export class StatsComponent implements OnInit {
                       }
                   }]
               },
+              legend: {
+                position: "right"
+              }
           }
       });
     }
