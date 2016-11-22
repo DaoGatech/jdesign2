@@ -20,7 +20,10 @@ export class StatsComponent implements OnInit {
   	selectedDevice = 'Indoor Pool';
 
     randomData: Array<number> = [12, 19, 3, 5, 2, 3];
-    title: String = '# of Fucks I Give';
+    randomData2: Array<number> = [1, 9, 13, 15, 22, 3];
+    randomData3: Array<number> = [5, 14, 25, 3, 17, 0];
+    chartTitle: String = "THE FUCKING TITLE";
+    title: String = "# of Fucks I Give";
     tickLabels: Array<String> = ["WHAT", "THE", "FUCK", "AM", "I", "DOING"];
 
     ngOnInit() {
@@ -30,25 +33,49 @@ export class StatsComponent implements OnInit {
           data: {
               labels: this.tickLabels,
               datasets: [{
-                  label: this.title,
-                  data: this.randomData,
-                  backgroundColor: [
-                      'rgba(0, 85, 190, 0.2)',
-                      ],
-                  borderColor: [
-                      'rgba(68, 85, 255, 1)',
-                      ],
-                  borderWidth: 3
+                    label: this.title,
+                    data: this.randomData,
+                    backgroundColor: [
+                        'rgba(0, 0, 255, 0.2)',
+                        ],
+                    borderColor: [
+                        'rgba(0, 0, 255, 1)',
+                        ],
+                    borderWidth: 3,
+              }, {
+                    label: this.title,
+                    data: this.randomData2,
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.2)',
+                        ],
+                    borderColor: [
+                        'rgba(255, 0, 0, 1)',
+                        ],
+                    borderWidth: 3
+              }, {
+                    label: this.title,
+                    data: this.randomData3,
+                    backgroundColor: [
+                        'rgba(0, 255, 0, 0.2)',
+                        ],
+                    borderColor: [
+                        'rgba(0, 255, 0, 1)',
+                        ],
+                    borderWidth: 3
               }]
           },
           options: {
+              title: {
+                  display: true,
+                  text: this.chartTitle
+              },
               scales: {
                   yAxes: [{
                       ticks: {
                           beginAtZero:true
                       }
                   }]
-              }
+              },
           }
       });
     }
