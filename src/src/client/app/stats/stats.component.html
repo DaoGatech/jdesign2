@@ -14,18 +14,22 @@
 	</div>
 
 	<div class="secondary-btn-container">
-		<select>
+		<select [ngModel]="selectedRange" (ngModelChange)="chartOnChange($event, 'Range')">
 			<option *ngFor="let range of statsRange">{{range}}</option>
 		</select>
-		<select>
+		<select [ngModel]="selectedDays" (ngModelChange)="chartOnChange($event, 'Days')">
 			<option *ngFor="let day of statsDays">{{day}}</option>
 		</select>
-		<select>
+		<select [ngModel]="selectedTimes" (ngModelChange)="chartOnChange($event, 'Times')">
 			<option *ngFor="let time of statsTimes">{{time}}</option>
 		</select>
 	</div>
 </div>
 
-<div style="width:75%">
+<div class="stats-chart">
 	<canvas id="myChart"></canvas>
+</div>
+
+<div class="stats-chart">
+	<canvas id="myChart2"></canvas>
 </div>
