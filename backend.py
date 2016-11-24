@@ -4,6 +4,8 @@ from datetime import datetime, date, time
 crcFilename = 'crcJson.json'
 dateFilename = 'date.json'
 activeFilename = 'active.json'
+averagesFilename = 'averages.json'
+countsFilename = 'counts.json'
 
 try:
     with open( crcFilename ) as areasfile:        
@@ -18,6 +20,17 @@ try:
 except IOError:
     activeAreas = [ datetime( 1970, 1, 1), {} ]
 
+try:
+    with open( averagesFilename ) as averagesfile:
+        averageAreas = json.load(averagesfile)
+except IOError:
+    averageAreas = {}
+
+try:
+    with open( countsFilename ) as countsfile:
+        countsAreas = json.load(countsfile)
+except IOError:
+    countsAreas = {}
 
 #read excel file and build data structure (starting with Areas)
 def pull():
@@ -47,25 +60,42 @@ def pull():
           	#add crc area or append to it
             if cell[0] not in Areas.keys():
                 Areas[cell[0]] = {}
+                averageAreas[cell[0]] = {}
+                countsAreas[cell[0]] = {}
 
             weekday = parsedate( rowDate[1] )
             daydict = Areas[cell[0]]
-                
+            daydictAvg = averageAreas[cell[0]]
+            daydictCounts = countsAreas[cell[0]]
+    
             #add day or append to it
             if weekday not in daydict.keys():
                 daydict[weekday] = {}
+                daydictAvg[weekday] = {}
+                daydictCounts[weekday] = {}
 
             lightdict = daydict[weekday]
+            timedictAvg = daydictAvg[weekday]
+            timedictCounts = daydictCounts[weekday]
+
             light = getLight( time[1] )
                 
             #add time of day or append to it based on time
             if light not in lightdict.keys():
                 lightdict[light] = []
 
+            if time[1] not in timedictAvg.keys():
+                timedictAvg[time[1]] = 0
+                timedictCounts[time[1]] = 0
+
             time_and_occs = lightdict[light]
+            timeAvg = timedictAvg[time[1]]
+            timeCounts = timedictCounts[time[1]]
             
             if not math.isnan( cell[1] ) and isinstance( cell[1], float ):
                 time_and_occs.append( ( time[1], cell[1] ) )
+                timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
+                timedictCounts[time[1]] = timeCounts + 1
 
             activeAreas[0] = addStringToDT( rowDate[1], time[1] )
             
@@ -82,6 +112,12 @@ def pull():
     
     with open( crcFilename, 'w' ) as fp:
       json.dump( Areas, fp )
+
+    with open( averagesFilename, 'w') as fp:
+        json.dump( averageAreas, fp)
+
+    with open( countsFilename, 'w') as fp:
+        json.dump( countsAreas, fp)
 
 
 #get usable date from excel format
