@@ -13,7 +13,7 @@
 		</select>
 	</div>
 
-	<div class="secondary-btn-container">
+<!-- 	<div class="secondary-btn-container">
 		<select [ngModel]="selectedRange" (ngModelChange)="chartOnChange($event, 'Range')">
 			<option *ngFor="let range of statsRange">{{range}}</option>
 		</select>
@@ -23,21 +23,55 @@
 		<select [ngModel]="selectedTimes" (ngModelChange)="chartOnChange($event, 'Times')">
 			<option *ngFor="let time of statsTimes">{{time}}</option>
 		</select>
-	</div>
-<!-- 	<div class="secondary-btn-container">
+	</div> -->
+
+	<div class="secondary-btn-container">
 		<div class="form-group">
-		    <label for="options">Options:</label>
-		    <div *ngFor="let option of options">
+		    <label for="options">Range:</label>
+			<form action="">
+				<div *ngFor="let range of statsRange" >
+			        <label>
+
+				    	<input type="radio" 
+				    	name="{{range}}" 
+				    	value="{{range}}"
+				    	[(ngModel)]="selectedRange" 
+				    	(ngModelChange)="chartOnChange($event, 'Range')" /> {{range}}
+		        	</label>
+
+				</div>
+			</form>
+		</div>
+		<div class="form-group">
+		    <label for="options">Days: {{selectedDay}}</label>
+		    <div *ngFor="let day of statsDaysKeys">
 		        <label>
 		            <input type="checkbox"
-		                   name="options"
-		                   value="{{option.value}}"
-		                   [(ngModel)]="option.checked"/>
-		            {{option.name}}
+		                   name="{{day}}"
+		                   value="{{statsDays[day]}}"
+		                   [(ngModel)]="statsDays[day]"
+		                   (ngModelChange)="chartOnChange($event, 'Days')"/> {{day}}
+
 		        </label>
 		    </div>
 		</div>
-	</div> -->
+		<div class="form-group">
+		    <label for="options">Time Period: {{buildTool}}</label>
+			<form action="">
+				<div *ngFor="let time of statsTimes" >
+		        	<label>
+
+				    	<input type="radio" 
+				    	name="{{time}}" 
+				    	value="{{time}}"
+				    	[(ngModel)]="selectedTimes" 
+				    	(ngModelChange)="chartOnChange($event, 'Times')"/> {{time}}
+		        	</label>
+
+				</div>
+			</form>
+		</div>
+	</div>
 
 </div>
 

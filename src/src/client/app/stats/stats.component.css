@@ -65,6 +65,17 @@ button{
 
   }
 }
+
+.form-group{
+  position: relative;
+  float: left;
+  width: 30%;
+  margin-right: 5%;
+  font-size: 14px;
+}
+.form-group:last-child{
+  margin-right: 0;
+}
 select {
     background-color: #428bca;
     color: white;
