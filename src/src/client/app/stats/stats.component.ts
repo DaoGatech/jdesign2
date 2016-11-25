@@ -47,7 +47,7 @@ export class StatsComponent implements OnInit {
     selectedDevice: String = this.statsAreas[0];
 
 
-    // data for everyday of the week
+    // data for everyday of the past 24 hrs
     // x: time, y : population
     // Real data imported from json will need to be in this format
     // must also be in chronological order
