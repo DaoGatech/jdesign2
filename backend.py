@@ -1,11 +1,11 @@
 import pandas as pd, json, math
 from datetime import datetime, date, time
 
-crcFilename = 'crcJson.json'
-dateFilename = 'date.json'
-activeFilename = 'active.json'
-averagesFilename = 'averages.json'
-countsFilename = 'counts.json'
+crcFilename = 'src/src/client/crcJson.json'
+dateFilename = 'src/src/client/date.json'
+activeFilename = 'src/src/client/active.json'
+averagesFilename = 'src/src/client/averages.json'
+countsFilename = 'src/src/client/counts.json'
 
 try:
     with open( crcFilename ) as areasfile:        
