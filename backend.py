@@ -92,7 +92,7 @@ def pull():
             timeAvg = timedictAvg[time[1]]
             timeCounts = timedictCounts[time[1]]
             
-            if not math.isnan( cell[1] ) and isinstance( cell[1], float ):
+            if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                 time_and_occs.append( ( addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), cell[1] ) )
                 timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
                 timedictCounts[time[1]] = timeCounts + 1
@@ -101,7 +101,7 @@ def pull():
             
             if cell[0] not in activeAreas[1].keys():
                 activeAreas[1][cell[0]] = {}
-            if not math.isnan( cell[1] ) and isinstance( cell[1], float ):
+            if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                 activeAreas[1][cell[0]] = cell[1]
 
     with open( activeFilename, 'w' ) as fp:
