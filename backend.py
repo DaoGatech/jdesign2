@@ -93,7 +93,7 @@ def pull():
             timeCounts = timedictCounts[time[1]]
             
             if not math.isnan( cell[1] ) and isinstance( cell[1], float ):
-                time_and_occs.append( ( time[1], cell[1] ) )
+                time_and_occs.append( ( addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), cell[1] ) )
                 timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
                 timedictCounts[time[1]] = timeCounts + 1
 
