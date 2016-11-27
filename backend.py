@@ -16,7 +16,7 @@ except IOError:
 try:
     with open( activeFilename ) as activefile:        
         activeAreas = json.load( activefile )
-        activeAreas[0] = datetime.strptime( activeAreas[0], '%M-%H-%d-%m-%Y' )
+        activeAreas[0] = datetime.strptime( activeAreas[0], "%Y-%m-%d %H-%M" )
 except IOError:
     activeAreas = [ datetime( 1970, 1, 1), {} ]
 
