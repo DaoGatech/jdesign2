@@ -42,7 +42,7 @@ def pull():
     try:
         with open( dateFilename, 'r' ) as fp:
             lastCheck = fp.read()[1:-1]
-            lastCheck = datetime.strptime( lastCheck, '%M-%H-%d-%m-%Y' )
+            lastCheck = datetime.strptime( lastCheck, '%Y-%m-%d %H-%M' )
     except IOError:
         lastCheck = datetime( 1970, 1, 1 )
 
@@ -105,10 +105,10 @@ def pull():
                 activeAreas[1][cell[0]] = cell[1]
 
     with open( activeFilename, 'w' ) as fp:
-        json.dump( [activeAreas[0].strftime( "%M-%H-%d-%m-%Y" ), activeAreas[1]], fp )
+        json.dump( [activeAreas[0].strftime( "%Y-%m-%d %H-%M" ), activeAreas[1]], fp )
 
     with open( dateFilename, 'w' ) as fp:
-        json.dump(addStringToDT( rowDate[1], time[1]).strftime( "%M-%H-%d-%m-%Y" ), fp )
+        json.dump(addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), fp )
     
     with open( crcFilename, 'w' ) as fp:
       json.dump( Areas, fp )
