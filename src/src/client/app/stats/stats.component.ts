@@ -266,7 +266,7 @@ export class StatsComponent implements OnInit {
     }
 
     getData(): Promise<any> {
-        return this.http.get('app/test.txt')
+        return this.http.get('crcJson.json')
                    .toPromise()
                    .then(response => response.json())
                    .catch(this.handleError);
@@ -286,10 +286,6 @@ export class StatsComponent implements OnInit {
     chartOnChange(event: any, type: any) {
         if (type == "Device"){
             this.selectedDevice = event;
-            console.log(event);
-            console.log(this.respData);
-            console.log(this.respData[event]);
-
             this.setDataSet24(event);
 
         } else if (type == "Days") {
@@ -304,7 +300,6 @@ export class StatsComponent implements OnInit {
 
         this.minTime = this.timesDetailMain[this.selectedTimes][0];
         this.maxTime = this.timesDetailMain[this.selectedTimes][1];
-
 
         // set graph datasets
         this.setGraphDataSet(this.dataArr24);
@@ -366,10 +361,10 @@ export class StatsComponent implements OnInit {
                     label: "Monday",
                     data: this.graphDataArr["Monday"],
                     backgroundColor: [
-                        'rgba(0, 0, 255, 0.2)',
+                        'rgba(93,165,218, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(0, 0, 255, 1)',
+                        'rgba(93,165,218, 1)',
                         ],
                     borderWidth: 3,
                 },
@@ -377,10 +372,10 @@ export class StatsComponent implements OnInit {
                     label: "Tuesday",
                     data: this.graphDataArr["Tuesday"],
                     backgroundColor: [
-                        'rgba(0, 255, 0, 0.2)',
+                        'rgba(250,164,58, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(0, 255, 0, 1)',
+                        'rgba(250,164,58, 1)',
                         ],
                     borderWidth: 3,
                 },
@@ -388,10 +383,10 @@ export class StatsComponent implements OnInit {
                     label: "Wednesday",
                     data: this.graphDataArr["Wednesday"],
                     backgroundColor: [
-                        'rgba(255, 0, 0, 0.2)',
+                        'rgba(96,189,104, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(255, 0, 0, 1)',
+                        'rgba(96,189,104, 1)',
                         ],
                     borderWidth: 3,
                 },
@@ -399,10 +394,10 @@ export class StatsComponent implements OnInit {
                     label: "Thursday",
                     data: this.graphDataArr["Thursday"],
                     backgroundColor: [
-                        'rgba(255, 255, 0, 0.2)',
+                        'rgba(241,124,176, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(255, 255, 0, 1)',
+                        'rgba(241,124,176, 1)',
                         ],
                     borderWidth: 3,
                 },
@@ -410,10 +405,10 @@ export class StatsComponent implements OnInit {
                     label: "Friday",
                     data: this.graphDataArr["Friday"],
                     backgroundColor: [
-                        'rgba(0, 255, 255, 0.2)',
+                        'rgba(178,145,47, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(0, 255, 255, 1)',
+                        'rgba(178,145,47, 1)',
                         ],
                     borderWidth: 3,
                 },
@@ -421,10 +416,10 @@ export class StatsComponent implements OnInit {
                     label: "Saturday",
                     data: this.graphDataArr["Saturday"],
                     backgroundColor: [
-                        'rgba(255, 0, 255, 0.2)',
+                        'rgba(178,118,178, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(255, 0, 255, 1)',
+                        'rgba(178,118,178, 1)',
                         ],
                     borderWidth: 3,
                 },
@@ -432,10 +427,10 @@ export class StatsComponent implements OnInit {
                     label: "Sunday",
                     data: this.graphDataArr["Sunday"],
                     backgroundColor: [
-                        'rgba(255, 165, 0, 0.2)',
+                        'rgba(241,88,84, 0.2)',
                         ],
                     borderColor: [
-                        'rgba(255, 165, 0, 1)',
+                        'rgba(241,88,84, 1)',
                         ],
                     borderWidth: 3,
                 }
@@ -445,6 +440,7 @@ export class StatsComponent implements OnInit {
           options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                showLines: false,
                 title: {
                     display: true,
                     text: this.chartTitle
