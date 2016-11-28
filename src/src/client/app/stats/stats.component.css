@@ -21,7 +21,7 @@ button{
 
 .btn-container {
 	position: relative;
-    width: 325px;
+  width: 325px;
 }
 
 .primary-btn-container{
@@ -62,7 +62,6 @@ button{
     width: 75%;
     max-height: 400px;
     height: 35%;
-
   }
 }
 
@@ -73,9 +72,20 @@ button{
   margin-right: 5%;
   font-size: 14px;
 }
+
 .form-group:last-child{
   margin-right: 0;
 }
+
+input[type=checkbox] {
+  vertical-align: middle;
+}
+
+input[type=radio] {
+  margin-top: -1px;
+  vertical-align: middle;
+}
+
 select {
     background-color: #428bca;
     color: white;
@@ -85,4 +95,5 @@ select {
     margin-right: 3.33%;
     width: 30%;
     font-size: 13px;
+    text-align-last:center;
 }
