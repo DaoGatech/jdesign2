@@ -100,9 +100,11 @@ def pull():
             activeAreas[0] = addStringToDT( rowDate[1], time[1] )
             
             if cell[0] not in activeAreas[1].keys():
-                activeAreas[1][cell[0]] = {}
+                activeAreas[1][cell[0]] = [ {}, 0 ]
             if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
-                activeAreas[1][cell[0]] = cell[1]
+                activeAreas[1][cell[0]][0] = cell[1]
+                if cell[1] > activeAreas[1][cell[0]][1]:
+                    activeAreas[1][cell[0]][1] = cell[1]  
 
     with open( activeFilename, 'w' ) as fp:
         json.dump( [activeAreas[0].strftime( "%Y-%m-%d %H-%M" ), activeAreas[1]], fp )
