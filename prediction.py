@@ -9,30 +9,42 @@ predFutureFilename = 'src/src/client/predictionsLater.json'
 MINUTESBEFOREPREDICT = 30
 MINUTESAFTERNOCURRENT = 150
 IGNOREHISTHOURS = 2
-
-curTime = datetime.now()
+PREDICTIONHOURS = 3
+PREDICTIONINCREMENTS = 30
 
 predActiveDict = {}
 predFutureDict = {}
 
 def refresh():
-	curTime = activeAreas[0] + timedelta(seconds = 60 * (MINUTESBEFOREPREDICT + 50))
+	curTime = datetime.now()
+	#curTime = activeAreas[0] + timedelta(seconds = 60 * (MINUTESBEFOREPREDICT + 50))
 	if (curTime > (activeAreas[0] + timedelta(seconds = 60*MINUTESBEFOREPREDICT))):
 		for area in activeAreas[1].keys():
-			predActiveDict[area] = predict(area, (curTime - activeAreas[0]), curTime)
+			predActiveDict[area] = predict(area, (curTime - activeAreas[0]), curTime) 
 	else:
 		for area in activeAreas[1].keys():
 			predActiveDict[area] = activeAreas[1][area]
+	for area in activeAreas[1].keys():
+		predFutureDict[area] = []
+		predFutureDict[area].append((datetime.strftime( curTime, '%Y-%m-%d %H-%M' ),predActiveDict[area]))
+		timePred = PREDICTIONINCREMENTS / float(60)
+		while timePred <= PREDICTIONHOURS:
+			curTime = curTime + timedelta(seconds = 60 * PREDICTIONINCREMENTS)
+			timeString = datetime.strftime( curTime, '%Y-%m-%d %H-%M' )
+			predFutureDict[area].append((timeString, predict(area, (curTime - activeAreas[0]), curTime)))	
+			timePred += PREDICTIONINCREMENTS/float(60)
 	with open(predActiveFilename, 'w') as PAF:
 		json.dump(predActiveDict, PAF)
+	with open(predFutureFilename, 'w') as PFF:
+		json.dump(predFutureDict, PFF)
 
 def predict(area, updateLag, predictTime):
 	updateLagMin = updateLag.total_seconds()/60 - MINUTESBEFOREPREDICT
 	MINUTEWEIGHTINGDIFF = MINUTESAFTERNOCURRENT - MINUTESBEFOREPREDICT
 	dayOfWeek = parsedate(predictTime)
-	histPred = ceil(histAvg(averageAreas[area][dayOfWeek], predictTime))
+	histPred = histAvg(averageAreas[area][dayOfWeek], predictTime)
 	if (updateLagMin > MINUTESAFTERNOCURRENT):
-		return histPred
+		return math.ceil(histPred)
 	recentDataWeight = (MINUTEWEIGHTINGDIFF - updateLagMin)/MINUTEWEIGHTINGDIFF
 	return math.ceil(activeAreas[1][area] * recentDataWeight + histPred * (1 - recentDataWeight))
 
