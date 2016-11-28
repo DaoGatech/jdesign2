@@ -17,7 +17,7 @@ export class StatsComponent implements OnInit {
 
     respData: Object = {};
     dataArr24: Object = {};
-
+    days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
     // DEFAULT time periods and days (important later on)
     timesDetailMain: Object = {
@@ -32,9 +32,9 @@ export class StatsComponent implements OnInit {
 
     // "stats" bound to html values
     statsAreas: Array<String> = [];
-    statsRange: Array<String> = ["24 hours", "Week", "Month"]
+    statsRange: Array<String> = ["24 hours", "Week", "Month"];
     statsDays = {
-        "Monday" : true,
+        "Monday" : false,
         "Tuesday": false, 
         "Wednesday": false, 
         "Thursday": false, 
@@ -42,6 +42,7 @@ export class StatsComponent implements OnInit {
         "Saturday": false, 
         "Sunday": false
     };
+    
     statsDaysKeys = Object.keys(this.statsDays);
     statsTimes: Array<String> = this.timesMain;
 
@@ -237,7 +238,6 @@ export class StatsComponent implements OnInit {
 
 
     constructor(private http: Http){
-
         this.getData().then(data => {
 
             this.respData = data;
@@ -264,8 +264,9 @@ export class StatsComponent implements OnInit {
 
         
     }
-
+    
     getData(): Promise<any> {
+
         return this.http.get('crcJson.json')
                    .toPromise()
                    .then(response => response.json())
@@ -277,8 +278,9 @@ export class StatsComponent implements OnInit {
     }
 
     ngOnInit() {
-
-
+        var d = new Date();
+        var n = d.getDay();
+        this.statsDays[this.days[n]] = true;
     }
 
 
@@ -294,6 +296,10 @@ export class StatsComponent implements OnInit {
             this.selectedTimes = event;
         } else if (type == "Range") {
             this.selectedRange = event;
+            if(this.selectedRange == '24 hours') {
+                this.modifyStatsDays();
+            }
+            //console.log(this.selectedRange);
         } else {
             console.log("Type not recognized");
         }
@@ -308,6 +314,17 @@ export class StatsComponent implements OnInit {
         this.createChart();
 
 
+    }
+    
+    private modifyStatsDays() {
+        var d = new Date();
+        var n = d.getDay();
+        this.statsDays[this.days[n]] = true;                
+        for (var day in this.statsDays){
+            if (day != this.days[n]){
+                this.statsDays[day] = false;
+            }
+        }
     }
 
     private setDataSet24(area: string){
@@ -351,7 +368,6 @@ export class StatsComponent implements OnInit {
     }
 
     createChart(){
-
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
         type: 'line',
