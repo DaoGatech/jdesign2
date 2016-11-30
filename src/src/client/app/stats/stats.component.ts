@@ -142,7 +142,6 @@ export class StatsComponent implements OnInit {
                 this.modifyStatsDays();
                 this.chartShowLegend = false;
             }
-            //console.log(this.selectedRange);
         } else {
             console.log("Type not recognized");
         }
@@ -154,11 +153,8 @@ export class StatsComponent implements OnInit {
         this.setGraphDataSet(this.dataArrToday);
         this.setPredictions();
 
-        // console.log(this.graphDataArr);
-
         // must redraw chart after any change in dropdown options
         this.createChart();
-
 
     }
     
@@ -182,12 +178,14 @@ export class StatsComponent implements OnInit {
                 for (var point in this.respData[area][day][timePeriod]){
                     var d = this.respData[area][day][timePeriod][point];
                     var dataDate = moment(d[0],"YYYY-MM-DD HH-mm");
+                    var currentDayBeginning = moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD").add(5, "hours");
+                    currentDayBeginning.add(30, "minutes");
                     var currentDay = moment();
                     var yesterday = moment().subtract(1,"days");
 
-                    if (dataDate.isSameOrBefore(currentDay, "day") && dataDate.isAfter(yesterday, "day")){
-                        // console.log(moment(d[0],"YYYY-MM-DD HH-mm").format("YYYY-MM-DD HH-mm")); 
-                        // console.log(this.respData[area][day][timePeriod][point], area, day, timePeriod, point);
+                    // if the item is before the start of the selected time period
+                    // e.g. 4:30am should not be pushed to Morning, which starts at 5:30am
+                    if (dataDate.isSameOrBefore(currentDay, "days") && dataDate.isSameOrAfter(this.timesDetailMain["Morning"][0], "minutes")){
                         this.dataArrToday[day][timePeriod].push({x: moment(moment(d[0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(d[1]))});
 
                     }
@@ -209,10 +207,11 @@ export class StatsComponent implements OnInit {
         if (this.selectedTimes in this.respPredData[this.selectedDevice]){
 
             var temp = this.respPredData[this.selectedDevice][this.selectedTimes]
+
             for (var item in temp) {
                 // if the item is before the start of the selected time period
                 // e.g. 4:30am should not be pushed to Morning, which starts at 5:30am
-                if ( moment(temp[item][0],"YYYY-MM-DD HH-mm").isAfter(this.timesDetailMain[this.selectedTimes][0]) ){
+                if ( moment(temp[item][0],"YYYY-MM-DD HH-mm").isAfter(this.timesDetailMain[this.selectedTimes][0])){
                     this.graphPredArr.push({x: moment(moment(temp[item][0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(temp[item][1]))})
                 }
             }
@@ -250,6 +249,9 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(93,165,218, 0.2)',
                     borderColor: 'rgba(93,165,218, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(93,165,218, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Tuesday",
@@ -257,6 +259,9 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(250,164,58, 0.2)',
                     borderColor: 'rgba(250,164,58, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(250,164,58, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Wednesday",
@@ -264,6 +269,9 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(96,189,104, 0.2)',
                     borderColor: 'rgba(96,189,104, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(96,189,104, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Thursday",
@@ -271,6 +279,9 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(241,124,176, 0.2)',
                     borderColor: 'rgba(241,124,176, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(241,124,176, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Friday",
@@ -278,6 +289,9 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(178,145,47, 0.2)',
                     borderColor: 'rgba(178,145,47, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(178,145,47, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Saturday",
@@ -285,6 +299,9 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(178,118,178, 0.2)',
                     borderColor: 'rgba(178,118,178, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(178,118,178, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Sunday",
@@ -292,16 +309,20 @@ export class StatsComponent implements OnInit {
                     backgroundColor: 'rgba(241,88,84, 0.2)',
                     borderColor: 'rgba(241,88,84, 1)',
                     borderWidth: 3,
+                    pointBackgroundColor: 'rgba(241,88,84, 1)',
+                    pointRadius: 3,
+                    fill: true,
                 },
                 {
                     label: "Predicted",
                     data: this.graphPredArr,
-                    fill: true,
                     backgroundColor: 'rgba(241,88,84, 0.2)',
                     borderColor: 'rgba(241,88,84, 1)',
                     borderWidth: 3,
                     pointBackgroundColor: 'rgba(241,88,84, 1)',
-                    pointRadius: 3
+                    pointRadius: 3,
+                    fill: true,
+
                 }
 
               ]
@@ -342,7 +363,6 @@ export class StatsComponent implements OnInit {
                 }
           }
       });
-    console.log(myChart.generateLegend());
     }
 
 

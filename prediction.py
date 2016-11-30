@@ -91,7 +91,6 @@ def parsedate( date ):
 
 def getLight( light ):
 	hours = int(light)
-	print hours
 	if hours < 12:
 		return 'Morning'
 	elif hours < 17:
