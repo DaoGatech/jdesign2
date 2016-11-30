@@ -32,7 +32,7 @@ export class StatsComponent implements OnInit {
 
     // "stats" bound to html values
     statsAreas: Array<String> = [];
-    statsRange: Array<String> = ["24 hours", "Week", "Month"];
+    statsRange: Array<String> = ["Today", "Week", "Month"];
     statsDays = {
         "Monday" : false,
         "Tuesday": false, 
@@ -55,167 +55,6 @@ export class StatsComponent implements OnInit {
     selectedDevice: String = this.statsAreas[0];
 
 
-    // data for everyday of the past 24 hrs
-    // x: time, y : population
-    // Real data imported from json will need to be in this format
-    // must also be in chronological order
-    // dataArr24: Object = {
-    //     "Monday" : {
-    //         "Morning" : [
-    //             {x : moment("5:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("9:35AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    //     "Tuesday" : {
-    //         "Morning" : [
-    //             {x : moment("10:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("12:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    //     "Wednesday" : {
-    //         "Morning" : [
-    //             {x : moment("5:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("9:35AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    //     "Thursday" : {
-    //         "Morning" : [
-    //             {x : moment("5:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("9:35AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    //     "Friday" : {
-    //         "Morning" : [
-    //             {x : moment("5:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("9:35AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    //     "Saturday" : {
-    //         "Morning" : [
-    //             {x : moment("5:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("9:35AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    //     "Sunday" : {
-    //         "Morning" : [
-    //             {x : moment("5:30AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("6:00AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("9:35AM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Afternoon" : [
-    //             {x : moment("1:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("2:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("4:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Evening" : [
-    //             {x : moment("6:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("8:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ],
-    //         "Night" : [
-    //             {x : moment("11:30PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 }, 
-    //             {x : moment("9:00PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //             {x : moment("10:35PM", "HH:mmA"), y : Math.floor(Math.random() * 50) + 1 },
-    //         ]
-
-    //     },
-    // }
-
     // graph displays monday morning data as default
     graphDataArr: Object = {
         "Monday" : [],
@@ -227,18 +66,19 @@ export class StatsComponent implements OnInit {
         "Sunday" :[],
     };
 
-    chartTitle: String = "THE FUCKING TITLE";
+    chartTitle: String = "";
     title1: String = "Current";
     title2: String = "Predicted";
 
     // default to monday morning
     minTime = moment("5:30AM", "HH:mmA");
-    maxTime = moment("11:59AM", "HH:mmA");
+    maxTime = moment("12:00PM", "HH:mmA");
 
 
 
     constructor(private http: Http){
-        this.getData().then(data => {
+        var fileName = "crcJson.json";
+        this.getData(fileName).then(data => {
 
             this.respData = data;
 
@@ -247,12 +87,11 @@ export class StatsComponent implements OnInit {
 
             }
             this.selectedDevice = this.statsAreas[0];
-            this.dataArr24 = {};
 
             // get 24 hr data
             this.setDataSet24(this.statsAreas[0])
             
-            // set graph datasets
+            // set graph datasets after data is received 
             this.setGraphDataSet(this.dataArr24);
 
             // create chart after data is received 
@@ -265,9 +104,9 @@ export class StatsComponent implements OnInit {
         
     }
     
-    getData(): Promise<any> {
+    getData(fileName: string): Promise<any> {
 
-        return this.http.get('crcJson.json')
+        return this.http.get(fileName)
                    .toPromise()
                    .then(response => response.json())
                    .catch(this.handleError);
@@ -276,6 +115,7 @@ export class StatsComponent implements OnInit {
         console.error('An error occurred', error); // for demo purposes only
         return Promise.reject(error.message || error);
     }
+
 
     ngOnInit() {
         var d = new Date();
@@ -310,6 +150,8 @@ export class StatsComponent implements OnInit {
         // set graph datasets
         this.setGraphDataSet(this.dataArr24);
 
+        // console.log(this.graphDataArr);
+
         // must redraw chart after any change in dropdown options
         this.createChart();
 
@@ -335,7 +177,16 @@ export class StatsComponent implements OnInit {
 
                 for (var point in this.respData[area][day][timePeriod]){
                     var d = this.respData[area][day][timePeriod][point];
-                    this.dataArr24[day][timePeriod].push({x: moment(d[0],"HH:mmA"), y: Math.round(parseFloat(d[1]))});
+                    var dataDate = moment(d[0],"YYYY-MM-DD HH-mm");
+                    var currentDay = moment();
+                    var yesterday = moment().subtract(1,"days");
+
+                    if (dataDate.isSameOrBefore(currentDay, "day") && dataDate.isAfter(yesterday, "day")){
+                        // console.log(moment(d[0],"YYYY-MM-DD HH-mm").format("YYYY-MM-DD HH-mm")); 
+                        console.log(this.respData[area][day][timePeriod][point], area, day, timePeriod, point);
+                        this.dataArr24[day][timePeriod].push({x: moment(moment(d[0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(d[1]))});
+
+                    }
 
 
                 }

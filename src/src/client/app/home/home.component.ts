@@ -1,5 +1,6 @@
 import { Component, OnInit,  } from '@angular/core';
-
+import { Http, Response } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 /**
  * This class represents the lazy loaded HomeComponent.
  */
@@ -13,8 +14,8 @@ import { Component, OnInit,  } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   height: number;
-  breakdownAreas: Array<String> = ["Indoor Pool", "Basketball Court", "Outdoor Pool","Indoor Pool", "Basketball Court", "Outdoor Pool"];
-
+  breakdownAreas: Array<String> = [];
+  respData: Object;
 /*
   newName: string = '';
   errorMessage: string;
@@ -32,6 +33,30 @@ export class HomeComponent implements OnInit {
   /**
    * Get the names OnInit
    */
+    constructor(private http: Http){
+        var fileName = "predictionsNow.json";
+        this.getData(fileName).then(data => {
+            this.respData = data;
+            for (var item in data){
+                this.breakdownAreas.push(item);
+            }
+            this.breakdownAreas.sort();
+        });
+
+        
+    }
+
+    getData(fileName: string): Promise<any> {
+
+        return this.http.get(fileName)
+                   .toPromise()
+                   .then(response => response.json())
+                   .catch(this.handleError);
+    }
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
 
   ngOnInit() {
     this.height = 0;

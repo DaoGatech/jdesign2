@@ -131,7 +131,7 @@ def getLight( light ):
     time = light.split( ':' )
     hours = int( time[0] )
     
-    if ( time[1][-2] == 'p' ):
+    if ( time[1][-2] == 'p' and hours != 12):
       hours += 12
     
     mins = time[1][0:2]
@@ -141,7 +141,7 @@ def getLight( light ):
       return 'Morning'
     elif hours < 17:
       return 'Afternoon'
-    elif hours < 20:
+    elif hours < 21:
       return 'Evening'
     else:
       return 'Night'

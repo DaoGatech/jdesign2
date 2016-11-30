@@ -44,7 +44,7 @@
 				</div>
 			</form>
 		</div>
-		<div *ngIf="selectedRange != '24 hours'" class="form-group">
+		<div *ngIf="selectedRange != 'Today'" class="form-group">
 		    <label for="options">Days: {{selectedDay}}</label>
 		    <div *ngFor="let day of statsDaysKeys">
 		        <label>
