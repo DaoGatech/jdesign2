@@ -25,13 +25,23 @@ def refresh():
 		for area in activeAreas[1].keys():
 			predActiveDict[area] = activeAreas[1][area]
 	for area in activeAreas[1].keys():
-		predFutureDict[area] = []
-		predFutureDict[area].append((datetime.strftime( curTime, '%Y-%m-%d %H-%M' ),predActiveDict[area]))
+		predFutureDict[area] = {}
+		newPeriod = getLight( datetime.strftime( curTime, '%H' ) )
+		if newPeriod not in predFutureDict[area].keys():
+			predFutureDict[area][newPeriod] = []
+		predFutureDict[area][newPeriod].append((datetime.strftime( curTime, '%Y-%m-%d %H-%M' ),predActiveDict[area]))
+
 		timePred = PREDICTIONINCREMENTS / float(60)
+
+		curTime2 = curTime
 		while timePred <= PREDICTIONHOURS:
-			curTime = curTime + timedelta(seconds = 60 * PREDICTIONINCREMENTS)
-			timeString = datetime.strftime( curTime, '%Y-%m-%d %H-%M' )
-			predFutureDict[area].append((timeString, predict(area, (curTime - activeAreas[0]), curTime)))	
+			curTime2 = curTime2 + timedelta(seconds = 60 * PREDICTIONINCREMENTS)
+			timeString = datetime.strftime( curTime2, '%Y-%m-%d %H-%M' )
+			newPeriod = getLight(datetime.strftime( curTime2, '%H' ))
+			if newPeriod not in predFutureDict[area].keys():
+				predFutureDict[area][newPeriod] = []
+
+			predFutureDict[area][newPeriod].append((timeString, predict(area, (curTime2 - activeAreas[0]), curTime2)))	
 			timePred += PREDICTIONINCREMENTS/float(60)
 	with open(predActiveFilename, 'w') as PAF:
 		json.dump(predActiveDict, PAF)
@@ -79,6 +89,17 @@ def histAvg(avgDict, predictTime):
 def parsedate( date ):
     return date.strftime( '%A' )
 
+def getLight( light ):
+	hours = int(light)
+	print hours
+	if hours < 12:
+		return 'Morning'
+	elif hours < 17:
+		return 'Afternoon'
+	elif hours < 21:
+		return 'Evening'
+	else:
+		return 'Night'
 def strToTime(timeString):
     time = timeString.split( ':' )
     hours = int( time[0] )

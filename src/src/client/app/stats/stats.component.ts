@@ -16,7 +16,7 @@ declare var moment: any;
 export class StatsComponent implements OnInit {
 
     respData: Object = {};
-    dataArr24: Object = {};
+    dataArrToday: Object = {};
     days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
     // DEFAULT time periods and days (important later on)
@@ -27,8 +27,6 @@ export class StatsComponent implements OnInit {
       "Night" : [moment("9:00PM", "HH:mmA"),moment("11:59PM", "HH:mmA")]
     };
     timesMain: Array<String> = ["Morning", "Afternoon", "Evening", "Night"];
-
-
 
     // "stats" bound to html values
     statsAreas: Array<String> = [];
@@ -46,14 +44,11 @@ export class StatsComponent implements OnInit {
     statsDaysKeys = Object.keys(this.statsDays);
     statsTimes: Array<String> = this.timesMain;
 
-
-
     // "selected" bound to the dropdowns
     selectedRange: String = this.statsRange[0];
     selectedDays: String = this.statsDaysKeys[0];
     selectedTimes: String = this.statsTimes[0];
     selectedDevice: String = this.statsAreas[0];
-
 
     // graph displays monday morning data as default
     graphDataArr: Object = {
@@ -70,6 +65,8 @@ export class StatsComponent implements OnInit {
     title1: String = "Current";
     title2: String = "Predicted";
 
+    chartShowLegend: boolean = false;
+    
     // default to monday morning
     minTime = moment("5:30AM", "HH:mmA");
     maxTime = moment("12:00PM", "HH:mmA");
@@ -79,9 +76,7 @@ export class StatsComponent implements OnInit {
     constructor(private http: Http){
         var fileName = "crcJson.json";
         this.getData(fileName).then(data => {
-
             this.respData = data;
-
             for (var area in data){
                 this.statsAreas.push(area);
 
@@ -89,10 +84,10 @@ export class StatsComponent implements OnInit {
             this.selectedDevice = this.statsAreas[0];
 
             // get 24 hr data
-            this.setDataSet24(this.statsAreas[0])
+            this.setDatasetToday(this.statsAreas[0])
             
             // set graph datasets after data is received 
-            this.setGraphDataSet(this.dataArr24);
+            this.setGraphDataSet(this.dataArrToday);
 
             // create chart after data is received 
             this.createChart();
@@ -128,7 +123,7 @@ export class StatsComponent implements OnInit {
     chartOnChange(event: any, type: any) {
         if (type == "Device"){
             this.selectedDevice = event;
-            this.setDataSet24(event);
+            this.setDatasetToday(event);
 
         } else if (type == "Days") {
             this.selectedDays = event;
@@ -136,8 +131,10 @@ export class StatsComponent implements OnInit {
             this.selectedTimes = event;
         } else if (type == "Range") {
             this.selectedRange = event;
-            if(this.selectedRange == '24 hours') {
+            this.chartShowLegend = true;
+            if(this.selectedRange == 'Today') {
                 this.modifyStatsDays();
+                this.chartShowLegend = false;
             }
             //console.log(this.selectedRange);
         } else {
@@ -148,7 +145,7 @@ export class StatsComponent implements OnInit {
         this.maxTime = this.timesDetailMain[this.selectedTimes][1];
 
         // set graph datasets
-        this.setGraphDataSet(this.dataArr24);
+        this.setGraphDataSet(this.dataArrToday);
 
         // console.log(this.graphDataArr);
 
@@ -169,11 +166,11 @@ export class StatsComponent implements OnInit {
         }
     }
 
-    private setDataSet24(area: string){
+    private setDatasetToday(area: string){
         for (var day in this.respData[area]){
-            this.dataArr24[day] = {};
+            this.dataArrToday[day] = {};
             for (var timePeriod in this.respData[area][day]) {
-                this.dataArr24[day][timePeriod] = [];
+                this.dataArrToday[day][timePeriod] = [];
 
                 for (var point in this.respData[area][day][timePeriod]){
                     var d = this.respData[area][day][timePeriod][point];
@@ -184,7 +181,7 @@ export class StatsComponent implements OnInit {
                     if (dataDate.isSameOrBefore(currentDay, "day") && dataDate.isAfter(yesterday, "day")){
                         // console.log(moment(d[0],"YYYY-MM-DD HH-mm").format("YYYY-MM-DD HH-mm")); 
                         console.log(this.respData[area][day][timePeriod][point], area, day, timePeriod, point);
-                        this.dataArr24[day][timePeriod].push({x: moment(moment(d[0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(d[1]))});
+                        this.dataArrToday[day][timePeriod].push({x: moment(moment(d[0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(d[1]))});
 
                     }
 
@@ -194,8 +191,8 @@ export class StatsComponent implements OnInit {
             }
         }
         for (day in this.statsDaysKeys){
-            if (this.dataArr24[this.statsDaysKeys[day]] == undefined){
-                this.dataArr24[this.statsDaysKeys[day]] = [];
+            if (this.dataArrToday[this.statsDaysKeys[day]] == undefined){
+                this.dataArrToday[this.statsDaysKeys[day]] = [];
             }
         }
     }
@@ -336,7 +333,8 @@ export class StatsComponent implements OnInit {
          
                 legend: {
                     onClick: (e) => e.stopPropagation(),
-                    position: "bottom"
+                    position: "bottom",
+                    display: this.chartShowLegend
                 }
           }
       });
