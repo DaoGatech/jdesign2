@@ -77,36 +77,11 @@ export class StatsComponent implements OnInit {
 
 
     constructor(private http: Http){
-        var fileName = "crcJson.json";
-        this.getData(fileName).then(data => {
-            this.respData = data;
-            for (var area in data){
-                this.statsAreas.push(area);
-
-            }
-            this.selectedDevice = this.statsAreas[0];
-
-            // get 24 hr data
-            this.setDatasetToday(this.statsAreas[0])
-            
-            // set graph datasets after data is received 
-            this.setGraphDataSet(this.dataArrToday);
-            this.setPredictions();
-
-            // create chart after data is received 
-            this.createChart();
 
 
-
-        });
-        var fileName = "predictionsLater.json";
-        this.getData(fileName).then(data => {
-            this.respPredData = data;
-        }
     }
     
     getData(fileName: string): Promise<any> {
-
         return this.http.get(fileName)
                    .toPromise()
                    .then(response => response.json())
@@ -122,6 +97,38 @@ export class StatsComponent implements OnInit {
         var d = new Date();
         var n = d.getDay();
         this.statsDays[this.days[n]] = true;
+        
+        var fileName = "crcJson.json";
+        this.getData(fileName).then(data => {
+            this.respData = data;
+            for (var area in data){
+                this.statsAreas.push(area);
+
+            }
+            this.selectedDevice = this.statsAreas[0];
+
+            // get 24 hr data
+            this.setDatasetToday(this.statsAreas[0])
+            
+            console.log("ongInit set predictions")
+            this.setPredictions();
+
+            // set graph datasets after data is received 
+            this.setGraphDataSet(this.dataArrToday);
+
+            // create chart after data is received 
+            this.createChart();
+
+        });
+
+        var fileName = "predictionsLater.json";
+        this.getData(fileName).then(data => {
+            this.respPredData = data;
+            console.log("this.respPredData");
+            console.log(this.respPredData);
+
+
+        }
     }
 
 
@@ -151,6 +158,8 @@ export class StatsComponent implements OnInit {
 
         // set graph datasets
         this.setGraphDataSet(this.dataArrToday);
+
+        // set graph predictions
         this.setPredictions();
 
         // must redraw chart after any change in dropdown options
@@ -204,8 +213,11 @@ export class StatsComponent implements OnInit {
 
     private setPredictions(){
         this.graphPredArr = [];
+        if (Object.keys(this.respPredData).length == 0){
+            console.log("respPredData len is 0, refetching data");
+            return 0;
+        }
         if (this.selectedTimes in this.respPredData[this.selectedDevice]){
-
             var temp = this.respPredData[this.selectedDevice][this.selectedTimes]
 
             for (var item in temp) {

@@ -34,14 +34,7 @@ export class HomeComponent implements OnInit {
    * Get the names OnInit
    */
     constructor(private http: Http){
-        var fileName = "predictionsNow.json";
-        this.getData(fileName).then(data => {
-            this.respData = data;
-            for (var item in data){
-                this.breakdownAreas.push(item);
-            }
-            this.breakdownAreas.sort();
-        });
+
 
         
     }
@@ -60,6 +53,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.height = 0;
+    
+    var fileName = "predictionsNow.json";
+    this.getData(fileName).then(data => {
+        this.respData = data;
+        for (var item in data){
+            this.breakdownAreas.push(item);
+        }
+        this.breakdownAreas.sort();
+    });
   }
 
   scrollDown() {
