@@ -16,6 +16,7 @@ declare var moment: any;
 export class StatsComponent implements OnInit {
 
     respData: Object = {};
+    respPredData: Object = {};
     dataArrToday: Object = {};
     days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -60,6 +61,8 @@ export class StatsComponent implements OnInit {
         "Saturday" :[],
         "Sunday" :[],
     };
+    // predictions to display on graph
+    graphPredArr = [];
 
     chartTitle: String = "";
     title1: String = "Current";
@@ -88,6 +91,7 @@ export class StatsComponent implements OnInit {
             
             // set graph datasets after data is received 
             this.setGraphDataSet(this.dataArrToday);
+            this.setPredictions();
 
             // create chart after data is received 
             this.createChart();
@@ -95,8 +99,10 @@ export class StatsComponent implements OnInit {
 
 
         });
-
-        
+        var fileName = "predictionsLater.json";
+        this.getData(fileName).then(data => {
+            this.respPredData = data;
+        }
     }
     
     getData(fileName: string): Promise<any> {
@@ -146,6 +152,7 @@ export class StatsComponent implements OnInit {
 
         // set graph datasets
         this.setGraphDataSet(this.dataArrToday);
+        this.setPredictions();
 
         // console.log(this.graphDataArr);
 
@@ -180,7 +187,7 @@ export class StatsComponent implements OnInit {
 
                     if (dataDate.isSameOrBefore(currentDay, "day") && dataDate.isAfter(yesterday, "day")){
                         // console.log(moment(d[0],"YYYY-MM-DD HH-mm").format("YYYY-MM-DD HH-mm")); 
-                        console.log(this.respData[area][day][timePeriod][point], area, day, timePeriod, point);
+                        // console.log(this.respData[area][day][timePeriod][point], area, day, timePeriod, point);
                         this.dataArrToday[day][timePeriod].push({x: moment(moment(d[0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(d[1]))});
 
                     }
@@ -195,6 +202,22 @@ export class StatsComponent implements OnInit {
                 this.dataArrToday[this.statsDaysKeys[day]] = [];
             }
         }
+    }
+
+    private setPredictions(){
+        this.graphPredArr = [];
+        if (this.selectedTimes in this.respPredData[this.selectedDevice]){
+
+            var temp = this.respPredData[this.selectedDevice][this.selectedTimes]
+            for (var item in temp) {
+                // if the item is before the start of the selected time period
+                // e.g. 4:30am should not be pushed to Morning, which starts at 5:30am
+                if ( moment(temp[item][0],"YYYY-MM-DD HH-mm").isAfter(this.timesDetailMain[this.selectedTimes][0]) ){
+                    this.graphPredArr.push({x: moment(moment(temp[item][0],"YYYY-MM-DD HH-mm").format("hh:mmA"), "hh:mmA"), y: Math.round(parseFloat(temp[item][1]))})
+                }
+            }
+        }
+
     }
 
     // set data on the graph based array passed in
@@ -224,79 +247,61 @@ export class StatsComponent implements OnInit {
                 datasets: [{
                     label: "Monday",
                     data: this.graphDataArr["Monday"],
-                    backgroundColor: [
-                        'rgba(93,165,218, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(93,165,218, 1)',
-                        ],
+                    backgroundColor: 'rgba(93,165,218, 0.2)',
+                    borderColor: 'rgba(93,165,218, 1)',
                     borderWidth: 3,
                 },
                 {
                     label: "Tuesday",
                     data: this.graphDataArr["Tuesday"],
-                    backgroundColor: [
-                        'rgba(250,164,58, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(250,164,58, 1)',
-                        ],
+                    backgroundColor: 'rgba(250,164,58, 0.2)',
+                    borderColor: 'rgba(250,164,58, 1)',
                     borderWidth: 3,
                 },
                 {
                     label: "Wednesday",
                     data: this.graphDataArr["Wednesday"],
-                    backgroundColor: [
-                        'rgba(96,189,104, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(96,189,104, 1)',
-                        ],
+                    backgroundColor: 'rgba(96,189,104, 0.2)',
+                    borderColor: 'rgba(96,189,104, 1)',
                     borderWidth: 3,
                 },
                 {
                     label: "Thursday",
                     data: this.graphDataArr["Thursday"],
-                    backgroundColor: [
-                        'rgba(241,124,176, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(241,124,176, 1)',
-                        ],
+                    backgroundColor: 'rgba(241,124,176, 0.2)',
+                    borderColor: 'rgba(241,124,176, 1)',
                     borderWidth: 3,
                 },
                 {
                     label: "Friday",
                     data: this.graphDataArr["Friday"],
-                    backgroundColor: [
-                        'rgba(178,145,47, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(178,145,47, 1)',
-                        ],
+                    backgroundColor: 'rgba(178,145,47, 0.2)',
+                    borderColor: 'rgba(178,145,47, 1)',
                     borderWidth: 3,
                 },
                 {
                     label: "Saturday",
                     data: this.graphDataArr["Saturday"],
-                    backgroundColor: [
-                        'rgba(178,118,178, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(178,118,178, 1)',
-                        ],
+                    backgroundColor: 'rgba(178,118,178, 0.2)',
+                    borderColor: 'rgba(178,118,178, 1)',
                     borderWidth: 3,
                 },
                 {
                     label: "Sunday",
                     data: this.graphDataArr["Sunday"],
-                    backgroundColor: [
-                        'rgba(241,88,84, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(241,88,84, 1)',
-                        ],
+                    backgroundColor: 'rgba(241,88,84, 0.2)',
+                    borderColor: 'rgba(241,88,84, 1)',
                     borderWidth: 3,
+                },
+                {
+                    label: "Predicted",
+                    data: this.graphPredArr,
+                    fill: true,
+                    backgroundColor: 'rgba(241,88,84, 0.2)',
+                    borderColor: 'rgba(241,88,84, 1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: 'rgba(241,88,84, 1)',
+                    pointRadius: 3
                 }
 
               ]
@@ -304,7 +309,6 @@ export class StatsComponent implements OnInit {
           options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                showLines: false,
                 title: {
                     display: true,
                     text: this.chartTitle
@@ -334,10 +338,11 @@ export class StatsComponent implements OnInit {
                 legend: {
                     onClick: (e) => e.stopPropagation(),
                     position: "bottom",
-                    display: this.chartShowLegend
+                    display: this.chartShowLegend,
                 }
           }
       });
+    console.log(myChart.generateLegend());
     }
 
 
