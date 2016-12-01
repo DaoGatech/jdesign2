@@ -76,6 +76,7 @@ export class StatsComponent implements OnInit {
                     this.getData("predictionsLater.json").then(data => {
                         this.predLaterJson = data;
                         this.createTodayChart();
+                        this.lineChart.resize();
                     }
 				}
 			}
