@@ -15,7 +15,8 @@ export class HomeComponent implements OnInit {
 
   height: number;
   breakdownAreas: Array<String> = [];
-  respData: Object;
+  predNowJson: Object;
+  maxJson: Object;
 /*
   newName: string = '';
   errorMessage: string;
@@ -40,7 +41,6 @@ export class HomeComponent implements OnInit {
     }
 
     getData(fileName: string): Promise<any> {
-
         return this.http.get(fileName)
                    .toPromise()
                    .then(response => response.json())
@@ -53,15 +53,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.height = 0;
-    
-    var fileName = "predictionsNow.json";
-    this.getData(fileName).then(data => {
-        this.respData = data;
-        for (var item in data){
-            this.breakdownAreas.push(item);
-        }
-        this.breakdownAreas.sort();
-    });
+        this.getData("active.json").then(data => {
+            this.maxJson = data[1];
+            this.getData("predictionsNow.json").then(data => {
+                this.predNowJson = data;
+                for (var item in data){
+                    this.breakdownAreas.push(item);
+                }
+                this.breakdownAreas.sort();
+            });
+        });
   }
 
   scrollDown() {

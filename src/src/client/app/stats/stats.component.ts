@@ -41,6 +41,7 @@ export class StatsComponent implements OnInit {
     predLaterJson: Object = {};
 
 	chartTitle: string = "TITLE";
+    lineChart = null;
 
 	chartXmax: moment = this.timesDetailMain["Morning"][1];
 	chartXmin: moment = this.timesDetailMain["Morning"][0];
@@ -97,6 +98,7 @@ export class StatsComponent implements OnInit {
             console.log("Type not recognized");
         }
 
+        this.lineChart.destroy();
         if (this.selectedRange == "Today"){
         	this.createTodayChart();
         } else if (this.selectedRange == "Month"){
@@ -127,11 +129,7 @@ export class StatsComponent implements OnInit {
                 }
             }
         }
-        console.log(graphPredData);
-
         graphPredData.sort(this.compareTimes);
-
-
 
         var tempMax = 0
         if (graphInputData.length != 0){
@@ -146,10 +144,10 @@ export class StatsComponent implements OnInit {
 
 
 		var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
+        this.lineChart = new Chart(ctx, {
         type: 'line',
+        animation: false,
             data: {
-                // labels: this.randomData1,
                 datasets: [
                     {
                         label: this.selectedDay,
@@ -271,9 +269,8 @@ export class StatsComponent implements OnInit {
 
         console.log(graphSugMax);
 
-
 		var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
+        this.lineChart = new Chart(ctx, {
         type: 'line',
             data: {
                 // labels: this.randomData1,
