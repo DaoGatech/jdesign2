@@ -150,9 +150,9 @@ export class StatsComponent implements OnInit {
             data: {
                 datasets: [
                     {
-                        label: this.selectedDay,
+                        label: "Current",
                         data: graphInputData,
-                        backgroundColor: 'rgba(93,165,218, 0.2)',
+                        backgroundColor: 'rgba(93,165,218, 0.25)',
                         borderColor: 'rgba(93,165,218, 1)',
                         borderWidth: 3,
                         pointBackgroundColor: 'rgba(93,165,218, 1)',
@@ -160,12 +160,12 @@ export class StatsComponent implements OnInit {
                         fill: true,
                     },
                     {
-                        label: "Prediction",
+                        label: "Predicted",
                         data: graphPredData,
-                        backgroundColor: 'rgba(93,165,218, 0.2)',
-                        borderColor: 'rgba(93,165,218, 1)',
+                        backgroundColor: 'rgba(93,165,218, 0.1)',
+                        borderColor: 'rgba(93,165,218, .8)',
                         borderWidth: 3,
-                        pointBackgroundColor: 'rgba(93,165,218, 1)',
+                        pointBackgroundColor: 'rgba(93,165,218, .8)',
                         pointRadius: 3,
                         borderDash: [5,5],
                         fill: true,

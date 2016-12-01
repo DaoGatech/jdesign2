@@ -1,6 +1,8 @@
 import { Component, OnInit,  } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+
+declare var moment: any;
 /**
  * This class represents the lazy loaded HomeComponent.
  */
@@ -17,6 +19,11 @@ export class HomeComponent implements OnInit {
   breakdownAreas: Array<String> = [];
   predNowJson: Object;
   maxJson: Object;
+  totalOccupancy: Number = 0;
+  dateJson: Object;
+  lastUpdatedMinutes: Number;
+  lastUpdatedHours: Number;
+  lastUpdatedDays: Number;
 /*
   newName: string = '';
   errorMessage: string;
@@ -59,8 +66,22 @@ export class HomeComponent implements OnInit {
                 this.predNowJson = data;
                 for (var item in data){
                     this.breakdownAreas.push(item);
+                    this.totalOccupancy = this.totalOccupancy + data[item];
                 }
                 this.breakdownAreas.sort();
+                this.getData("date.json").then(data => {
+                    this.dateJson = data;
+                    
+                    var lastUpdateDate = moment(this.dateJson, "YYYY-MM-DD HH-mm");
+
+                    var duration = moment.duration(moment().diff(lastUpdateDate));
+                    var days = parseInt(duration.asDays());
+                    var hours = parseInt(duration.asHours()) - days * 24;
+                    var minutes = parseInt(duration.asMinutes()) - (days * 24 * 60) - (hours*60) ;
+                    this.lastUpdatedDays = days;
+                    this.lastUpdatedHours = hours;
+                    this.lastUpdatedMinutes = minutes;
+                });
             });
         });
   }
