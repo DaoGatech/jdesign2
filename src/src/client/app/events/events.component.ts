@@ -26,7 +26,7 @@ export class EventsComponent {
 			var date = div[i].textContent;
 			var datesplit = date.split("/");
 			if (+datesplit[1] == dd && +datesplit[0] == mm) {
-				events[i].style.backgroundColor = "#add8e6";
+				events[i].style.backgroundColor = "rgb(255, 224, 224)";
 			}
 		}
 	}

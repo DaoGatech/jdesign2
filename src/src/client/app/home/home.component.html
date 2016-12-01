@@ -1,10 +1,15 @@
 <div class="container" id="container">
 	<h1>Total Occupancy</h1>
 	<p>
-	  174
+	  {{totalOccupancy}}
 	</p>
 	<h4>
-		Last Updated:
+		Last Updated: 
+    <div>
+    <span>{{lastUpdatedDays}} days</span>
+    <span>{{lastUpdatedHours}} hours</span>
+    <span>{{lastUpdatedMinutes}} minutes</span>
+    </div>
 	</h4>
     <div class="breakdown" id="breakdown">
       <button type="button" class="btn btn-primary"
@@ -23,7 +28,7 @@
 
           <!--display for CRC area occupancy-->
           <div class="block-update">
-            {{respData[area]}} / MAX
+            {{predNowJson[area]}} / {{maxJson[area][1]}}
           </div>
 
           <!--display for CRC area bars-->

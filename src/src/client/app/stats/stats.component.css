@@ -77,13 +77,11 @@ button{
   margin-right: 0;
 }
 
-input[type=checkbox] {
-  vertical-align: middle;
+.form-group div {
+  margin: 15px 0 15px 0;
 }
-
 input[type=radio] {
-  margin-top: -1px;
-  vertical-align: middle;
+  height: 15px;
 }
 
 select {
