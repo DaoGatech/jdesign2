@@ -23,16 +23,16 @@ export class StatsComponent implements OnInit {
     };
 
 
-	statsAreas: Array<String> = [];
+	statsAreas: Array<string> = [];
 	selectedArea: string = this.statsAreas[0];
 
-	statsRanges: Array<String> = ["Today", "Month"];
+	statsRanges: Array<string> = ["Today", "Month"];
 	selectedRange: string = this.statsRanges[0];
 
-	statsDays: Array<String> = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+	statsDays: Array<string> = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
 	selectedDay: string = this.statsDays[0];
 
-	statsTimes: Array<String> = ["Morning", "Afternoon", "Evening", "Night"];
+	statsTimes: Array<string> = ["Morning", "Afternoon", "Evening", "Night"];
 	selectedTime: string = this.statsTimes[0];
     
 	crcJson: Object = {};
@@ -40,11 +40,8 @@ export class StatsComponent implements OnInit {
 	monthJson: Object = {};
     predLaterJson: Object = {};
 
-	chartTitle: string = "TITLE";
-    lineChart = null;
-
-	chartXmax: moment = this.timesDetailMain["Morning"][1];
-	chartXmin: moment = this.timesDetailMain["Morning"][0];
+	chartTitle: string = "";
+    lineChart: any = null;
 
     getData(fileName: string): Promise<any> {
         return this.http.get(fileName)
@@ -107,9 +104,9 @@ export class StatsComponent implements OnInit {
 	}
 
 	createTodayChart(){
-		var graphInputData = [];
-        var graphPredData = [];
-        var graphSugMax = 10;
+		var graphInputData: Array<Object> = [];
+        var graphPredData: Array<Object> = [];
+        var graphSugMax: Number = 10;
 
 		if (this.selectedArea in this.todayJson){
 			if (this.selectedTime in this.todayJson[this.selectedArea]){
@@ -246,8 +243,9 @@ export class StatsComponent implements OnInit {
 		for (var item in graphInputData){
 			if (graphInputData[item].length != 0){
 				// delete graphInputData[item];
+                var dataPoint = {};
 				for (var point in graphInputData[item]){
-					var dataPoint = graphInputData[item][point]
+					dataPoint = graphInputData[item][point]
 					graphInputArr[graphInputArrKeys[counter]].push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
 				}
 				counter = counter + 1;
@@ -375,3 +373,4 @@ export class StatsComponent implements OnInit {
 		if (a.x.isBefore(b.x)){return -1};
 		return 0;
 	}
+}

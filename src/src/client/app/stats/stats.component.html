@@ -15,7 +15,7 @@
 	<div class="secondary-btn-container">
 		
 		<div class="form-group">
-		    <label for="options">Range: {{selectedRange}}</label>
+		    <label for="options">Range:</label>
 			<form action="">
 				<div *ngFor="let range of statsRanges" >
 			        <label>
@@ -28,9 +28,22 @@
 				</div>
 			</form>
 		</div>
-
+		<div class="form-group">
+		    <label for="options">Time Period:</label>
+			<form action="">
+				<div *ngFor="let time of statsTimes" >
+		        	<label>
+				    	<input type="radio" 
+				    	name="{{time}}" 
+				    	value="{{time}}"
+				    	[(ngModel)]="selectedTime" 
+				    	(ngModelChange)="chartOnChange($event, 'Time')"/> {{time}}
+		        	</label>
+				</div>
+			</form>
+		</div>
 		<div *ngIf="selectedRange != 'Today'" class="form-group">
-		    <label for="options">Days: {{selectedDay}}</label>
+		    <label for="options">Days:</label>
 		    <form action="">
 			    <div *ngFor="let day of statsDays">
 			        <label>
@@ -44,20 +57,7 @@
 		    </form>
 		</div>
 
-		<div class="form-group">
-		    <label for="options">Time Period: {{selectedTime}}</label>
-			<form action="">
-				<div *ngFor="let time of statsTimes" >
-		        	<label>
-				    	<input type="radio" 
-				    	name="{{time}}" 
-				    	value="{{time}}"
-				    	[(ngModel)]="selectedTime" 
-				    	(ngModelChange)="chartOnChange($event, 'Time')"/> {{time}}
-		        	</label>
-				</div>
-			</form>
-		</div>
+
 
 	</div>
 

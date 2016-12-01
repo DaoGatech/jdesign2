@@ -160,7 +160,7 @@ export class SeedConfig {
    * `index.html`.
    * @type {string}
    */
-  APP_TITLE = 'CRC Tracker';
+  APP_TITLE = 'CRC Live Count';
 
   /**
    * The base folder of the applications source files.
