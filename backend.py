@@ -1,11 +1,14 @@
 import pandas as pd, json, math
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
+import os, sys, getopt
 
 crcFilename = 'src/src/client/crcJson.json'
 dateFilename = 'src/src/client/date.json'
 activeFilename = 'src/src/client/active.json'
 averagesFilename = 'src/src/client/averages.json'
 countsFilename = 'src/src/client/counts.json'
+todayFilename = 'src/src/client/today.json'
+monthFilename = 'src/src/client/month.json'
 
 try:
     with open( crcFilename ) as areasfile:        
@@ -32,8 +35,25 @@ try:
 except IOError:
     countsAreas = {}
 
+todayAreas = {}
+try:
+    with open( todayFilename ) as todayFile:
+        todayAreas = json.load(todayFile)
+except IOError:
+    todayAreas = {}
+
+monthAreas = {}
+try:
+    with open( monthFilename ) as monthFile:
+        monthAreas = json.load(monthFile)
+except IOError:
+    monthAreas = {}
+
 #read excel file and build data structure (starting with Areas)
 def pull():
+    # monthAreas = cleanMonthArray(monthAreas, datetime.now() - timedelta(seconds = 60*60*24*10))
+    # todayAreas = cleanTodayArray(todayAreas, datetime.now())
+    # print(monthAreas)
     xl = pd.ExcelFile( "crc.xlsx" )
     df = xl.parse( "Survey1" )
     lastCheck = datetime( 1970, 1, 1 )
@@ -54,7 +74,54 @@ def pull():
         rowDate = columns.next()
         skip = False
         time = columns.next()
+        TodayColumns = row[1].iteritems()
+        TodayColumns.next()
+        TodayColumns.next()
+        curTime = datetime.now()
+        curDate = curTime.strftime("%Y-%m-%d")
+        pastMonthDate = curTime - timedelta(seconds = 60*60*24*30)
         
+        if isRowValid( rowDate[1], time[1], lastCheck ) and rowDate[1] > pastMonthDate:
+            for cell in columns:
+                if cell[0] not in monthAreas.keys():
+                    monthAreas[cell[0]] = {}
+                monthDay = monthAreas[cell[0]]
+
+                weekday = parsedate( rowDate[1] )
+                
+                if weekday not in monthDay.keys():    
+                    monthDay[weekday] = {}
+                lightMonth = monthDay[weekday]
+
+                light = getLight( time[1] )
+
+                if light not in lightMonth.keys():
+                    lightMonth[light] = []
+
+                monthArrs = lightMonth[light]
+
+                if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
+                    addToArrays(addStringToDT(rowDate[1], time[1]), cell[1], monthArrs) 
+        if isRowValid( rowDate[1], time[1], lastCheck ) and (curDate == rowDate[1].strftime("%Y-%m-%d")):
+            print("here?")
+            print(TodayColumns.next())
+            for cell in TodayColumns:
+                print("anything happening?")
+                if cell[0] not in todayAreas.keys():    
+                    todayAreas[cell[0]] = {}
+
+                lightToday = todayAreas[cell[0]]
+
+                light = getLight( time[1] )
+
+                if light not in lightToday.keys():
+                    lightToday[light] = []
+
+                todayArr = lightToday[light]
+
+                if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
+                    todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1]))
+
         if isRowValid( rowDate[1], time[1], lastCheck ):       
           for cell in columns:
           	#add crc area or append to it
@@ -62,6 +129,8 @@ def pull():
                 Areas[cell[0]] = {}
                 averageAreas[cell[0]] = {}
                 countsAreas[cell[0]] = {}
+            
+
 
             weekday = parsedate( rowDate[1] )
             daydict = Areas[cell[0]]
@@ -73,6 +142,7 @@ def pull():
                 daydict[weekday] = {}
                 daydictAvg[weekday] = {}
                 daydictCounts[weekday] = {}
+
 
             lightdict = daydict[weekday]
             timedictAvg = daydictAvg[weekday]
@@ -92,6 +162,9 @@ def pull():
             timeAvg = timedictAvg[time[1]]
             timeCounts = timedictCounts[time[1]]
             
+
+            #Set the crcjson file as well as averages and counts
+            
             if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                 time_and_occs.append( ( addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), cell[1] ) )
                 timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
@@ -106,6 +179,8 @@ def pull():
                 if cell[1] > activeAreas[1][cell[0]][1]:
                     activeAreas[1][cell[0]][1] = cell[1]  
 
+            
+
     with open( activeFilename, 'w' ) as fp:
         json.dump( [activeAreas[0].strftime( "%Y-%m-%d %H-%M" ), activeAreas[1]], fp )
 
@@ -113,13 +188,19 @@ def pull():
         json.dump(addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), fp )
     
     with open( crcFilename, 'w' ) as fp:
-      json.dump( Areas, fp )
+        json.dump( Areas, fp )
 
     with open( averagesFilename, 'w') as fp:
         json.dump( averageAreas, fp)
 
     with open( countsFilename, 'w') as fp:
         json.dump( countsAreas, fp)
+
+    with open( todayFilename, 'w') as fp:
+        json.dump( todayAreas, fp)
+
+    with open( monthFilename, 'w') as fp:
+        json.dump( monthAreas, fp)
 
 
 #get usable date from excel format
@@ -167,5 +248,104 @@ def addStringToDT( rowdate, timestring ):
 
     return datetime.combine( rowdate, time( hours, mins ) )
 
-pull()
+def addToArrays( datadate, value, arrays):
+    foundArray = False
+    for array in arrays:
+        if len(array) > 0:
+            valCheck = array[0][0].split(' ')[0]
+            if (datadate.strftime("%Y-%m-%d") == valCheck):
+                array.append((datadate.strftime("%Y-%m-%d %H-%M"), value))
+                foundArray = True
+    if not foundArray:
+        arrays.append([(datadate.strftime("%Y-%m-%d %H-%M"), value)])
+
+def cleanTodayArray(todayJson, currentDate):
+    for area in todayJson.keys():
+        todayArea = todayJson[area]
+        for light in todayArea.keys():
+            todayLightArr = todayArea[light]
+            for tup in todayLightArr:
+                #print(tup)
+                if len(tup) > 0 and datetime.strptime(tup[0], "%Y-%m-%d %H-%M") != currentDate:
+                    return {}
+    return todayJson
+
+def cleanMonthArray(monthJson, checkDate):
+    # print(monthJson.keys())
+    for area in monthJson.keys():
+        monthArea = monthJson[area]
+        for dayOfWeek in monthArea.keys():
+            monthDay = monthArea[dayOfWeek]
+            for light in monthDay.keys():
+                lightArrs = monthDay[light]
+                arrayCopy = lightArrs
+                for array in arrayCopy:
+                    if len(array) > 0:
+                        if datetime.strptime("" + array[0][0], "%Y-%m-%d %H-%M") < checkDate:
+                            lightArrs.remove(array)
+    return monthJson
+
+def cleanPull():
+    os.remove(dateFilename)
+    os.remove(crcFilename)
+    os.remove(activeFilename)
+    os.remove(averagesFilename)
+    os.remove(countsFilename)
+    os.remove(todayFilename)
+    os.remove(monthFilename)
+    try:
+        with open( crcFilename ) as areasfile:        
+            Areas = json.load( areasfile )
+    except IOError:
+        Areas = {}
+
+    try:
+        with open( activeFilename ) as activefile:        
+            activeAreas = json.load( activefile )
+            activeAreas[0] = datetime.strptime( activeAreas[0], "%Y-%m-%d %H-%M" )
+    except IOError:
+        activeAreas = [ datetime( 1970, 1, 1), {} ]
+
+    try:
+        with open( averagesFilename ) as averagesfile:
+            averageAreas = json.load(averagesfile)
+    except IOError:
+        averageAreas = {}
+
+    try:
+        with open( countsFilename ) as countsfile:
+            countsAreas = json.load(countsfile)
+    except IOError:
+        countsAreas = {}
+
+    todayAreas = {}
+    try:
+        with open( todayFilename ) as todayFile:
+            todayAreas = json.load(todayFile)
+    except IOError:
+        todayAreas = {}
+
+    monthAreas = {}
+    try:
+        with open( monthFilename ) as monthFile:
+            monthAreas = json.load(monthFile)
+    except IOError:
+        monthAreas = {}
+    pull()
+
+def startUp():
+    cleanPulled = False
+    try:
+        opts = getopt.getopt(sys.argv[1:],"c")
+        for opt in opts:
+            if len(opt) > 0 and opt[0][0] == '-c':
+                cleanPulled = True
+                cleanPull()
+
+        if not cleanPulled:
+            pull()
+    except:
+        pull()
+
+startUp()
 
