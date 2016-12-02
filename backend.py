@@ -58,8 +58,10 @@ except IOError:
 
 #read excel file and build data structure (starting with Areas)
 def pull():
-    monthAreasA = cleanMonthArray(monthAreas, datetime.now() - timedelta(seconds = 60*60*24*30))
-    todayAreasA = cleanTodayArray(todayAreas, datetime.now())
+    monthAreasA = cleanMonthArray(monthAreas, datetime.now() + timedelta(seconds = 60*60*11) - timedelta(seconds = 60*60*24*30))
+    todayAreasA = cleanTodayArray(todayAreas, datetime.now() + timedelta(seconds = 60*60*11))
+    #monthAreasA = cleanMonthArray(monthAreas, datetime(2016, 10, 17, 17, 0) - timedelta(seconds = 60*60*24*30))
+    #todayAreasA = cleanTodayArray(todayAreas, datetime(2016, 10, 17, 17, 0))
     xl = pd.ExcelFile( "crc.xlsx" )
     df = xl.parse( "Survey1" )
     lastCheck = datetime( 1970, 1, 1 )
@@ -83,12 +85,16 @@ def pull():
         TodayColumns = row[1].iteritems()
         TodayColumns.next()
         TodayColumns.next()
-        curTime = datetime.now()
+        MonthColumns = row[1].iteritems()
+        MonthColumns.next()
+        MonthColumns.next()
+        curTime = datetime.now() + timedelta(seconds = 60*60*11)
+        #curTime = datetime(2016, 10, 17, 17, 0)
         curDate = curTime.strftime("%Y-%m-%d")
         pastMonthDate = curTime - timedelta(seconds = 60*60*24*30)
-        
+
         if isRowValid( rowDate[1], time[1], lastCheck ) and rowDate[1] > pastMonthDate:
-            for cell in columns:
+            for cell in MonthColumns:
                 if cell[0] not in monthAreasA.keys():
                     monthAreasA[cell[0]] = {}
                 monthDay = monthAreasA[cell[0]]
@@ -123,11 +129,11 @@ def pull():
                 todayArr = lightToday[light]
 
                 if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
-                    todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1]))
-
+                    todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1])) 
+        
         if isRowValid( rowDate[1], time[1], lastCheck ):       
           for cell in columns:
-          	#add crc area or append to it
+            #add crc area or append to it
             if cell[0] not in Areas.keys():
                 Areas[cell[0]] = {}
                 averageAreas[cell[0]] = {}
@@ -173,8 +179,6 @@ def pull():
                 activeAreas[1][cell[0]] = [ {}, 0 ]
             if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                 activeAreas[1][cell[0]][0] = cell[1]
-
-            if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                 time_and_occs.append( ( addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), cell[1] ) )
                 timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
                 timedictCounts[time[1]] = timeCounts + 1
@@ -187,7 +191,7 @@ def pull():
                             value = 10 * (value//10)
                         activeAreas[1][cell[0]][1] = value
 
-            activeAreas[0] = addStringToDT( rowDate[1], time[1] )
+                activeAreas[0] = addStringToDT( rowDate[1], time[1] )
 
     with open( activeFilename, 'w' ) as fp:
         json.dump( [activeAreas[0].strftime( "%Y-%m-%d %H-%M" ), activeAreas[1]], fp )
@@ -242,7 +246,8 @@ def isRowValid( rowdate, timestring, lastcheck ):
     return  (   isinstance( timestring, unicode ) and 
                 isinstance( rowdate, datetime ) and
                 ( addStringToDT( rowdate, timestring ) - lastcheck ).total_seconds() > 0 and
-                ( addStringToDT( rowdate, timestring ) - datetime.now() ).total_seconds() <= 0 )
+                #( addStringToDT( rowdate, timestring ) - datetime(2016, 10, 17, 17, 0)).total_seconds() <= 0 )
+                ( addStringToDT( rowdate, timestring ) - datetime.now() - timedelta(seconds = 60*60*11)).total_seconds() <= 0 )
 
 #return a datetime with time data given a datetime object without it and a time formatted as a string
 def addStringToDT( rowdate, timestring ):
@@ -302,12 +307,15 @@ def cleanPull():
     os.remove(countsFilename)
     os.remove(todayFilename)
     os.remove(monthFilename)
+    os.remove(maxFilename)
+    Areas = {}
     try:
         with open( crcFilename ) as areasfile:        
             Areas = json.load( areasfile )
     except IOError:
         Areas = {}
 
+    activeAreas = {}
     try:
         with open( activeFilename ) as activefile:        
             activeAreas = json.load( activefile )
@@ -315,12 +323,14 @@ def cleanPull():
     except IOError:
         activeAreas = [ datetime( 1970, 1, 1), {} ]
 
+    averageAreas = {}
     try:
         with open( averagesFilename ) as averagesfile:
             averageAreas = json.load(averagesfile)
     except IOError:
         averageAreas = {}
 
+    countsAreas = {}
     try:
         with open( countsFilename ) as countsfile:
             countsAreas = json.load(countsfile)
@@ -340,6 +350,13 @@ def cleanPull():
             monthAreas = json.load(monthFile)
     except IOError:
         monthAreas = {}
+
+    maxAreas = {}
+    try:
+        with open( maxFilename ) as maxFile:
+            maxAreas = json.load(maxFile)
+    except IOError:
+        maxAreas = {}
     pull()
 
 def startUp():
