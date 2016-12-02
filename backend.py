@@ -11,50 +11,7 @@ todayFilename = 'src/src/client/today.json'
 monthFilename = 'src/src/client/month.json'
 maxFilename = 'src/src/client/max.json'
 
-try:
-    with open( crcFilename ) as areasfile:        
-        Areas = json.load( areasfile )
-except IOError:
-    Areas = {}
 
-try:
-    with open( activeFilename ) as activefile:        
-        activeAreas = json.load( activefile )
-        activeAreas[0] = datetime.strptime( activeAreas[0], "%Y-%m-%d %H-%M" )
-except IOError:
-    activeAreas = [ datetime( 1970, 1, 1), {} ]
-
-try:
-    with open( averagesFilename ) as averagesfile:
-        averageAreas = json.load(averagesfile)
-except IOError:
-    averageAreas = {}
-
-try:
-    with open( countsFilename ) as countsfile:
-        countsAreas = json.load(countsfile)
-except IOError:
-    countsAreas = {}
-
-todayAreas = {}
-try:
-    with open( todayFilename ) as todayFile:
-        todayAreas = json.load(todayFile)
-except IOError:
-    todayAreas = {}
-
-monthAreas = {}
-try:
-    with open( monthFilename ) as monthFile:
-        monthAreas = json.load(monthFile)
-except IOError:
-    monthAreas = {}
-
-try:
-    with open( maxFilename ) as maxFile:
-        maxAreas = json.load(maxFile)
-except IOError:
-    maxAreas = {}
 
 #read excel file and build data structure (starting with Areas)
 def pull():
@@ -309,13 +266,80 @@ def cleanPull():
     os.remove(monthFilename)
     os.remove(maxFilename)
     Areas = {}
+    maxAreas = {}
+    activeAreas = [ datetime( 1970, 1, 1), {} ]
+    averageAreas = {}
+    countsAreas = {}
+    todayAreas = {}
+    monthAreas = {}
+    pull()
+
+cleanPulled = False
+try:
+    opts = getopt.getopt(sys.argv[1:],"c")
+    for opt in opts:
+        if len(opt) > 0 and opt[0][0] == '-c':
+            cleanPulled = True
+            Areas = {}
+            maxAreas = {}
+            activeAreas = [ datetime( 1970, 1, 1), {} ]
+            averageAreas = {}
+            countsAreas = {}
+            todayAreas = {}
+            monthAreas = {}
+    if not cleanPulled:
+        try:
+            with open( crcFilename ) as areasfile:        
+                Areas = json.load( areasfile )
+        except IOError:
+            Areas = {}
+
+        try:
+            with open( activeFilename ) as activefile:        
+                activeAreas = json.load( activefile )
+                activeAreas[0] = datetime.strptime( activeAreas[0], "%Y-%m-%d %H-%M" )
+        except IOError:
+            activeAreas = [ datetime( 1970, 1, 1), {} ]
+
+        try:
+            with open( averagesFilename ) as averagesfile:
+                averageAreas = json.load(averagesfile)
+        except IOError:
+            averageAreas = {}
+
+        try:
+            with open( countsFilename ) as countsfile:
+                countsAreas = json.load(countsfile)
+        except IOError:
+            countsAreas = {}
+
+        todayAreas = {}
+        try:
+            with open( todayFilename ) as todayFile:
+                todayAreas = json.load(todayFile)
+        except IOError:
+            todayAreas = {}
+
+        monthAreas = {}
+        try:
+            with open( monthFilename ) as monthFile:
+                monthAreas = json.load(monthFile)
+        except IOError:
+            monthAreas = {}
+
+        try:
+            with open( maxFilename ) as maxFile:
+                maxAreas = json.load(maxFile)
+        except IOError:
+            maxAreas = {}
+        pull()
+except:
     try:
         with open( crcFilename ) as areasfile:        
             Areas = json.load( areasfile )
     except IOError:
         Areas = {}
 
-    activeAreas = {}
     try:
         with open( activeFilename ) as activefile:        
             activeAreas = json.load( activefile )
@@ -323,14 +347,12 @@ def cleanPull():
     except IOError:
         activeAreas = [ datetime( 1970, 1, 1), {} ]
 
-    averageAreas = {}
     try:
         with open( averagesFilename ) as averagesfile:
             averageAreas = json.load(averagesfile)
     except IOError:
         averageAreas = {}
 
-    countsAreas = {}
     try:
         with open( countsFilename ) as countsfile:
             countsAreas = json.load(countsfile)
@@ -351,27 +373,10 @@ def cleanPull():
     except IOError:
         monthAreas = {}
 
-    maxAreas = {}
     try:
         with open( maxFilename ) as maxFile:
             maxAreas = json.load(maxFile)
     except IOError:
         maxAreas = {}
     pull()
-
-def startUp():
-    cleanPulled = False
-    try:
-        opts = getopt.getopt(sys.argv[1:],"c")
-        for opt in opts:
-            if len(opt) > 0 and opt[0][0] == '-c':
-                cleanPulled = True
-                cleanPull()
-
-        if not cleanPulled:
-            pull()
-    except:
-        pull()
-
-startUp()
 
