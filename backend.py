@@ -9,6 +9,7 @@ averagesFilename = 'src/src/client/averages.json'
 countsFilename = 'src/src/client/counts.json'
 todayFilename = 'src/src/client/today.json'
 monthFilename = 'src/src/client/month.json'
+maxFilename = 'src/src/client/max.json'
 
 try:
     with open( crcFilename ) as areasfile:        
@@ -49,10 +50,16 @@ try:
 except IOError:
     monthAreas = {}
 
+try:
+    with open( maxFilename ) as maxFile:
+        maxAreas = json.load(maxFile)
+except IOError:
+    maxAreas = {}
+
 #read excel file and build data structure (starting with Areas)
 def pull():
     monthAreasA = cleanMonthArray(monthAreas, datetime.now() - timedelta(seconds = 60*60*24*30))
-    todayAreasA = cleanTodayArray(todayAreas, datetime.now() + timedelta(seconds = 60*60*24))
+    todayAreasA = cleanTodayArray(todayAreas, datetime.now())
     xl = pd.ExcelFile( "crc.xlsx" )
     df = xl.parse( "Survey1" )
     lastCheck = datetime( 1970, 1, 1 )
@@ -116,8 +123,7 @@ def pull():
                 todayArr = lightToday[light]
 
                 if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
-                    pass
-                    # todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1]))
+                    todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1]))
 
         if isRowValid( rowDate[1], time[1], lastCheck ):       
           for cell in columns:
@@ -126,13 +132,15 @@ def pull():
                 Areas[cell[0]] = {}
                 averageAreas[cell[0]] = {}
                 countsAreas[cell[0]] = {}
-            
 
+            if cell[0] not in maxAreas.keys():    
+                maxAreas[cell[0]] = [0, 0, 0, 0, 0]
 
             weekday = parsedate( rowDate[1] )
             daydict = Areas[cell[0]]
             daydictAvg = averageAreas[cell[0]]
             daydictCounts = countsAreas[cell[0]]
+            areaMax = maxAreas[cell[0]]
     
             #add day or append to it
             if weekday not in daydict.keys():
@@ -161,22 +169,27 @@ def pull():
             
 
             #Set the crcjson file as well as averages and counts
-            
-            if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
-                time_and_occs.append( ( addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), cell[1] ) )
-                timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
-                timedictCounts[time[1]] = timeCounts + 1
-
-            activeAreas[0] = addStringToDT( rowDate[1], time[1] )
-            
             if cell[0] not in activeAreas[1].keys():
                 activeAreas[1][cell[0]] = [ {}, 0 ]
             if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                 activeAreas[1][cell[0]][0] = cell[1]
-                if cell[1] > activeAreas[1][cell[0]][1]:
-                    activeAreas[1][cell[0]][1] = cell[1]  
 
-            
+            if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
+                time_and_occs.append( ( addStringToDT( rowDate[1], time[1]).strftime( "%Y-%m-%d %H-%M" ), cell[1] ) )
+                timedictAvg[time[1]] = (timeAvg * timeCounts + cell[1])/(timeCounts + 1)
+                timedictCounts[time[1]] = timeCounts + 1
+                if (cell[1] > areaMax[0]):
+                    areaMax[0] = cell[1]
+                    print(areaMax)
+                    areaMax.sort()
+                    print(areaMax)
+                    if (10 * (areaMax[0]//10)) > activeAreas[1][cell[0]][1]:
+                        value = areaMax[0]
+                        if value > 10:
+                            value = 10 * (value//10)
+                        activeAreas[1][cell[0]][1] = value
+
+            activeAreas[0] = addStringToDT( rowDate[1], time[1] )
 
     with open( activeFilename, 'w' ) as fp:
         json.dump( [activeAreas[0].strftime( "%Y-%m-%d %H-%M" ), activeAreas[1]], fp )
@@ -199,6 +212,8 @@ def pull():
     with open( monthFilename, 'w') as fp:
         json.dump( monthAreasA, fp)
 
+    with open( maxFilename, 'w') as fp:
+        json.dump(maxAreas, fp)
 
 #get usable date from excel format
 def parsedate( date ):
@@ -279,6 +294,7 @@ def cleanMonthArray(monthJson, checkDate):
                         if datetime.strptime("" + array[0][0], "%Y-%m-%d %H-%M") < checkDate:
                             lightArrs.remove(array)
     return monthJson
+
 
 def cleanPull():
     os.remove(dateFilename)
