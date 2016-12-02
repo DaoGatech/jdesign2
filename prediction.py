@@ -56,7 +56,8 @@ def predict(area, updateLag, predictTime):
 	if (updateLagMin > MINUTESAFTERNOCURRENT):
 		return math.ceil(histPred)
 	recentDataWeight = (MINUTEWEIGHTINGDIFF - updateLagMin)/MINUTEWEIGHTINGDIFF
-	return math.ceil(activeAreas[1][area] * recentDataWeight + histPred * (1 - recentDataWeight))
+
+	return math.ceil(activeAreas[1][area]) * recentDataWeight + histPred * (1 - recentDataWeight)
 
 
 def histAvg(avgDict, predictTime):
