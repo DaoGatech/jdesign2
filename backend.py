@@ -58,8 +58,8 @@ except IOError:
 
 #read excel file and build data structure (starting with Areas)
 def pull():
-    monthAreasA = cleanMonthArray(monthAreas, datetime.now() + timedelta(seconds = 60*60*11) - timedelta(seconds = 60*60*24*30))
-    todayAreasA = cleanTodayArray(todayAreas, datetime.now() + timedelta(seconds = 60*60*11))
+    monthAreasA = cleanMonthArray(monthAreas, datetime.now() - timedelta(seconds = 60*60*24*30))
+    todayAreasA = cleanTodayArray(todayAreas, datetime.now())
     #monthAreasA = cleanMonthArray(monthAreas, datetime(2016, 10, 17, 17, 0) - timedelta(seconds = 60*60*24*30))
     #todayAreasA = cleanTodayArray(todayAreas, datetime(2016, 10, 17, 17, 0))
     xl = pd.ExcelFile( "crc.xlsx" )
@@ -88,7 +88,7 @@ def pull():
         MonthColumns = row[1].iteritems()
         MonthColumns.next()
         MonthColumns.next()
-        curTime = datetime.now() + timedelta(seconds = 60*60*11)
+        curTime = datetime.now()
         #curTime = datetime(2016, 10, 17, 17, 0)
         curDate = curTime.strftime("%Y-%m-%d")
         pastMonthDate = curTime - timedelta(seconds = 60*60*24*30)
@@ -247,7 +247,7 @@ def isRowValid( rowdate, timestring, lastcheck ):
                 isinstance( rowdate, datetime ) and
                 ( addStringToDT( rowdate, timestring ) - lastcheck ).total_seconds() > 0 and
                 #( addStringToDT( rowdate, timestring ) - datetime(2016, 10, 17, 17, 0)).total_seconds() <= 0 )
-                ( addStringToDT( rowdate, timestring ) - datetime.now() - timedelta(seconds = 60*60*11)).total_seconds() <= 0 )
+                ( addStringToDT( rowdate, timestring ) - datetime.now()).total_seconds() <= 0 )
 
 #return a datetime with time data given a datetime object without it and a time formatted as a string
 def addStringToDT( rowdate, timestring ):
