@@ -17,6 +17,8 @@ predFutureDict = {}
 
 def refresh():
 	curTime = datetime.now()
+	# curTime = datetime.now() + timedelta(seconds = 60*60*8)
+
 	#curTime = activeAreas[0] + timedelta(seconds = 60 * (MINUTESBEFOREPREDICT + 50))
 	if (curTime > (activeAreas[0] + timedelta(seconds = 60*MINUTESBEFOREPREDICT))):
 		for area in activeAreas[1].keys():
@@ -56,7 +58,7 @@ def predict(area, updateLag, predictTime):
 	if (updateLagMin > MINUTESAFTERNOCURRENT):
 		return math.ceil(histPred)
 	recentDataWeight = (MINUTEWEIGHTINGDIFF - updateLagMin)/MINUTEWEIGHTINGDIFF
-	return math.ceil(activeAreas[1][area] * recentDataWeight + histPred * (1 - recentDataWeight))
+	return math.ceil(activeAreas[1][area][1] * recentDataWeight + histPred * (1 - recentDataWeight))
 
 
 def histAvg(avgDict, predictTime):
