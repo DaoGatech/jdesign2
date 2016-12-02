@@ -180,9 +180,7 @@ def pull():
                 timedictCounts[time[1]] = timeCounts + 1
                 if (cell[1] > areaMax[0]):
                     areaMax[0] = cell[1]
-                    print(areaMax)
                     areaMax.sort()
-                    print(areaMax)
                     if (10 * (areaMax[0]//10)) > activeAreas[1][cell[0]][1]:
                         value = areaMax[0]
                         if value > 10:
