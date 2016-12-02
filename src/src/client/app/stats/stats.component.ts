@@ -39,6 +39,7 @@ export class StatsComponent implements OnInit {
 	todayJson: Object = {};
 	monthJson: Object = {};
     predLaterJson: Object = {};
+    averageJson: Object = {};
 
 	chartTitle: string = "";
     lineChart: any = null;
@@ -75,8 +76,11 @@ export class StatsComponent implements OnInit {
 
                     this.getData("predictionsLater.json").then(data => {
                         this.predLaterJson = data;
-                        this.createTodayChart();
-                        this.lineChart.resize();
+                        this.getData("averages.json").then(data => {
+                            this.averageJson = data;
+                            this.createTodayChart();
+                            this.lineChart.resize();
+                        }
                     }
 				}
 			}
@@ -124,6 +128,7 @@ export class StatsComponent implements OnInit {
             if (this.selectedTime in this.predLaterJson[this.selectedArea]){
                 for (var point in this.predLaterJson[this.selectedArea][this.selectedTime]) {
                     var dataPoint = this.predLaterJson[this.selectedArea][this.selectedTime][point];
+
                     graphPredData.push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
                 }
             }
@@ -145,6 +150,9 @@ export class StatsComponent implements OnInit {
         } else {
             graphStepSize = 1;
         }
+
+        console.log(graphInputData);
+        console.log(graphPredData);
 
 		var ctx = document.getElementById("myChart");
         this.lineChart = new Chart(ctx, {
@@ -239,12 +247,15 @@ export class StatsComponent implements OnInit {
 						var newStr = this.selectedDay + String(series);
 						graphInputData[newStr] = []
 						for (var dataPoint in dataSeries){
+
 							graphInputData[newStr].push(dataSeries[dataPoint]);
 						}
 					}
 				}
 			}
 		}
+
+        console.log(graphInputData);
 
 		var counter = 0;
 		var graphInputArrKeys = Object.keys(graphInputArr);
@@ -254,7 +265,13 @@ export class StatsComponent implements OnInit {
                 var dataPoint = {};
 				for (var point in graphInputData[item]){
 					dataPoint = graphInputData[item][point]
-					graphInputArr[graphInputArrKeys[counter]].push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
+                    if (graphInputArrKeys[counter] != undefined){
+                        graphInputArr[graphInputArrKeys[counter]].push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
+
+                    }
+
+                    console.log(5);
+
 				}
 				counter = counter + 1;
 
@@ -380,7 +397,6 @@ export class StatsComponent implements OnInit {
           }
       });
 	}
-
 	private compareTimes(a,b){
 		if (a.x.isAfter(b.x)){return 1};
 		if (a.x.isBefore(b.x)){return -1};
