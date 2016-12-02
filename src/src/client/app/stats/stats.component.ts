@@ -113,6 +113,7 @@ export class StatsComponent implements OnInit {
 			if (this.selectedTime in this.todayJson[this.selectedArea]){
 				for (var point in this.todayJson[this.selectedArea][this.selectedTime]) {
 					var dataPoint = this.todayJson[this.selectedArea][this.selectedTime][point];
+                    console.log(1);
 					graphInputData.push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
 				}
 			}
@@ -123,6 +124,8 @@ export class StatsComponent implements OnInit {
             if (this.selectedTime in this.predLaterJson[this.selectedArea]){
                 for (var point in this.predLaterJson[this.selectedArea][this.selectedTime]) {
                     var dataPoint = this.predLaterJson[this.selectedArea][this.selectedTime][point];
+                    console.log(2);
+
                     graphPredData.push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
                 }
             }
@@ -232,6 +235,8 @@ export class StatsComponent implements OnInit {
 						var newStr = this.selectedDay + String(series);
 						graphInputData[newStr] = []
 						for (var dataPoint in dataSeries){
+                            console.log(3);
+
 							graphInputData[newStr].push(dataSeries[dataPoint]);
 						}
 					}
@@ -247,7 +252,17 @@ export class StatsComponent implements OnInit {
                 var dataPoint = {};
 				for (var point in graphInputData[item]){
 					dataPoint = graphInputData[item][point]
-					graphInputArr[graphInputArrKeys[counter]].push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
+                    if (graphInputArrKeys[counter] != undefined){
+                        console.log(graphInputData);
+                        console.log(graphInputArr);
+                        console.log(graphInputArrKeys);
+                        console.log(counter);
+                        graphInputArr[graphInputArrKeys[counter]].push({x: moment(moment(dataPoint[0], "YYYY-MM-DD HH-mm").format("HH:mmA"), "HH:mmA"), y: dataPoint[1]});
+
+                    }
+
+                    console.log(5);
+
 				}
 				counter = counter + 1;
 
@@ -353,8 +368,7 @@ export class StatsComponent implements OnInit {
                         type: "linear",
                         ticks: {
                             beginAtZero: true,
-                            fixedStepSize: 1,
-                            min: 0,
+                           
                             suggestedMax: graphSugMax
                         },
                         
