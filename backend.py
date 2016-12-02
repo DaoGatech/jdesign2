@@ -51,9 +51,8 @@ except IOError:
 
 #read excel file and build data structure (starting with Areas)
 def pull():
-    # monthAreas = cleanMonthArray(monthAreas, datetime.now() - timedelta(seconds = 60*60*24*10))
-    # todayAreas = cleanTodayArray(todayAreas, datetime.now())
-    # print(monthAreas)
+    monthAreasA = cleanMonthArray(monthAreas, datetime.now() - timedelta(seconds = 60*60*24*30))
+    todayAreasA = cleanTodayArray(todayAreas, datetime.now() + timedelta(seconds = 60*60*24))
     xl = pd.ExcelFile( "crc.xlsx" )
     df = xl.parse( "Survey1" )
     lastCheck = datetime( 1970, 1, 1 )
@@ -83,9 +82,9 @@ def pull():
         
         if isRowValid( rowDate[1], time[1], lastCheck ) and rowDate[1] > pastMonthDate:
             for cell in columns:
-                if cell[0] not in monthAreas.keys():
-                    monthAreas[cell[0]] = {}
-                monthDay = monthAreas[cell[0]]
+                if cell[0] not in monthAreasA.keys():
+                    monthAreasA[cell[0]] = {}
+                monthDay = monthAreasA[cell[0]]
 
                 weekday = parsedate( rowDate[1] )
                 
@@ -103,14 +102,11 @@ def pull():
                 if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
                     addToArrays(addStringToDT(rowDate[1], time[1]), cell[1], monthArrs) 
         if isRowValid( rowDate[1], time[1], lastCheck ) and (curDate == rowDate[1].strftime("%Y-%m-%d")):
-            print("here?")
-            print(TodayColumns.next())
             for cell in TodayColumns:
-                print("anything happening?")
-                if cell[0] not in todayAreas.keys():    
-                    todayAreas[cell[0]] = {}
+                if cell[0] not in todayAreasA.keys():    
+                    todayAreasA[cell[0]] = {}
 
-                lightToday = todayAreas[cell[0]]
+                lightToday = todayAreasA[cell[0]]
 
                 light = getLight( time[1] )
 
@@ -120,7 +116,8 @@ def pull():
                 todayArr = lightToday[light]
 
                 if not math.isnan( cell[1] ) and isinstance( cell[1], (float, int, long) ):
-                    todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1]))
+                    pass
+                    # todayArr.append((addStringToDT(rowDate[1], time[1]).strftime("%Y-%m-%d %H-%M"), cell[1]))
 
         if isRowValid( rowDate[1], time[1], lastCheck ):       
           for cell in columns:
@@ -197,10 +194,10 @@ def pull():
         json.dump( countsAreas, fp)
 
     with open( todayFilename, 'w') as fp:
-        json.dump( todayAreas, fp)
+        json.dump( todayAreasA, fp)
 
     with open( monthFilename, 'w') as fp:
-        json.dump( monthAreas, fp)
+        json.dump( monthAreasA, fp)
 
 
 #get usable date from excel format
@@ -265,13 +262,11 @@ def cleanTodayArray(todayJson, currentDate):
         for light in todayArea.keys():
             todayLightArr = todayArea[light]
             for tup in todayLightArr:
-                #print(tup)
                 if len(tup) > 0 and datetime.strptime(tup[0], "%Y-%m-%d %H-%M") != currentDate:
                     return {}
     return todayJson
 
 def cleanMonthArray(monthJson, checkDate):
-    # print(monthJson.keys())
     for area in monthJson.keys():
         monthArea = monthJson[area]
         for dayOfWeek in monthArea.keys():
