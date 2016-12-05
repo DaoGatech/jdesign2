@@ -1,28 +1,3 @@
-List of requirements:
-https://files.t-square.gatech.edu/access/content/attachment/gtc-4b22-674c-5080-8f76-82f72e46db8c/Assignments/88db795b-5827-4f09-a5a2-76d1a798de23/Customer%20Delivery%20Documentation_Fall2016.pdf
-
-
-There is no example
-
-
-Release Notes
-New software features for this release 
-Bug fixes made since the last release
-Known bugs and defects -- you should also include here any functionality you promised the customer but which is missing in the release
-
-
-Install Guide
-Pre-requisites: what is the required configuration of software and hardware that the customer must have before they can begin the installation process.
-Dependent Libraries that must be installed: what third party software must be installed for your software to function
-Download instructions: how will the customer and users get access to the project?
-Build instructions (if needed): if you are providing the raw source code rather than a binary build, how will the customer and users create the required executable application
-Installation of actual application: what steps have to be taken after the software is built, what directories are required for installation CS 3312/LMC 3431 Fall 2016 -- All Sections
-Run instructions: what does the user/customer actually have to do to get the software to execute Troubleshooting: what are common errors that occur during installation and what is the corrective action
-
-
-
-
-
 # CRC Live Count
 
 This project is an Angular 2-based web application running on Georgia Tech Plesk servers. It keeps track of the current occupancy of the Campus Recreation Center (CRC) at Georgia Tech, overall occupancy and each section within the CRC. When there is no recent updated data provided by the CRC, the project runs a prediction algorithm to predict the occupancies. It also shows trends with line charts based on the history of occupancy.
@@ -69,16 +44,19 @@ Run the following to create the necessary data files used by the application
 ```
 python backend.py
 python prediction.py
-
-
-Backend.py supports two modes of usage. Backend.py will work in most cases but should there be any change to the excel file besides just adding data to the end
-
-
 ```
+
+
+Backend.py supports two modes of usage: python backend.py and python backend.py -c. Backend.py will work in most cases, but should there be any change to the excel file besides just adding data to the end, backend.py -c will incorporate those fixes, while backend.py, for the sake of efficiency, skips to the end and assumes the data has stayed the same up above.
+
+
+
+
 
 ## Deployment
 
 This application should be deployed on the Plesk Web server. The prediction.py and backend.py scripts should be set to run repeatedly as scheduled tasks. Run backend.py as often as desired to check for new data and prediction.py for predictions. 
+
 ## Built With
 
 
@@ -105,7 +83,7 @@ This application should be deployed on the Plesk Web server. The prediction.py a
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
