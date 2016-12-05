@@ -24,18 +24,24 @@ Clone the repository from
 https://github.com/jackli439/jdesign2.git
 ```
 Navigate to src/ and run npm install to install the required packages.
+Make sure the excel spreadsheet used by the application is placed in the root folder and named 
+```
+crc.xlsx
+```
 To start the local server, run npm start. This should start the server at http://localhost:5555. You can now navigate to that site using any web browser.
 
-To run backend scripts, navigate to the root folder
+To run backend scripts manually, navigate to the root folder
 Run the following to create the necessary data files used by the application
 ```
-Python backend.py
-Python prediction.py
+python backend.py
+python prediction.py
 ```
+
+
 
 ## Deployment
 
-This application should be deployed on the Plesk Web server. The prediction.py and backend.py scripts should be set to run repeatedly as scheduled tasks. Run backend.py however often you want to check for new data and run prediction.py for however often you want updated predictions
+This application should be deployed on the Plesk Web server. The prediction.py and backend.py scripts should be set to run repeatedly as scheduled tasks. Run backend.py however often you want to check for new data and run prediction.py for however often you want updated predictions. Should any past data be changed at any point, run backend.py -c to regenerate the data with the fix. Backend.py will ignore these fixes otherwise. 
 
 ## Built With
 
@@ -47,11 +53,18 @@ This application should be deployed on the Plesk Web server. The prediction.py a
 
 ## Authors
 
-* **Jack Li** - 
-* **Royce Kim** - 
-* **Nimish Todi** - 
-* **Stephen Dao** - 
-* **Tyler Abney** - 
+* **Jack Li** - Front end development
+* **Royce Kim** - Front end development
+* **Nimish Todi** - Back end development
+* **Stephen Dao** - Front end development
+* **Tyler Abney** - Back end development
+
+
+## Unfinished Features
+
+
+* Machine learning based predictions
+* Administrative login to change data, areas
 
 
 ## License
@@ -61,7 +74,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 
-* Campus Recreation Center at Georgia Tech for supporting our project
-* Professors Robert Waters and Liz Hutter for guiding us
+* Campus Recreation Center at Georgia Tech for support
+* Professors Robert Waters and Liz Hutter for guidance
 
 
