@@ -2,6 +2,22 @@
 
 This project is an Angular 2-based web application running on Georgia Tech Plesk servers. It keeps track of the current occupancy of the Campus Recreation Center (CRC) at Georgia Tech, overall occupancy and each section within the CRC. When there is no recent updated data provided by the CRC, the project runs a prediction algorithm to predict the occupancies. It also shows trends with line charts based on the history of occupancy.
 
+
+## Release Notes
+### Version 1.0
+Data is pulled from excel file
+Main page displays occupancies and predictions
+Graph displaying historical data on statistics page
+Predictions for the next 3 hours are provided on the Today graph
+
+
+### Unfinished Features for Release 2.0 
+
+
+* Machine learning based predictions
+* Administrative login to change data, areas
+* Events page to view special events at the CRC
+
 ## Getting Started
 
 
@@ -74,11 +90,6 @@ This application should be deployed on the Plesk Web server. The prediction.py a
 * **Tyler Abney** - Back end development
 
 
-## Unfinished Features
-
-
-* Machine learning based predictions
-* Administrative login to change data, areas
 
 
 ## License
