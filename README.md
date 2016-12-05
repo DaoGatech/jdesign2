@@ -5,10 +5,10 @@ This project is an Angular 2-based web application running on Georgia Tech Plesk
 
 ## Release Notes
 ### Version 1.0
-Data is pulled from excel file
-Main page displays occupancies and predictions
-Graph displaying historical data on statistics page
-Predictions for the next 3 hours are provided on the Today graph
+* Data is pulled from excel file
+* Main page displays occupancies and predictions
+* Graph displaying historical data on statistics page
+* Predictions for the next 3 hours are provided on the Today graph
 
 
 ### Unfinished Features for Release 2.0 
