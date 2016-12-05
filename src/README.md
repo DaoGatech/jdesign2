@@ -10,11 +10,12 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 
+```
 Npm 3.10.9 - https://www.npmjs.com/
 Node.js 6.6.0 - https://nodejs.org/en/
 Python 2.7.12 - https://www.python.org/downloads/release/python-2712/
 Pandas 0.19.1  - http://pandas.pydata.org/pandas-docs/stable/install.html
-
+```
 
 ### Installing
 
