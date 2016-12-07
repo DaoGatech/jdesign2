@@ -13,6 +13,9 @@ declare var moment: any;
   styleUrls: ['home.component.css'],
 })
 
+/**
+ * This class sets up the home page
+ */
 export class HomeComponent implements OnInit {
 
   height: number;
@@ -30,34 +33,25 @@ export class HomeComponent implements OnInit {
   names: any[] = [];
 */
 
-  /**
-   * Creates an instance of the HomeComponent with the injected
-   * NameListService.
-   *
-   * @param {NameListService} nameListService - The injected NameListService.
-   */
-  //constructor(public nameListService: NameListService) {}
+  //Get the names OnInit
+  constructor(private http: Http){
 
-  /**
-   * Get the names OnInit
-   */
-    constructor(private http: Http){
+  }
 
+  //Json reader
+  getData(fileName: string): Promise<any> {
+      return this.http.get(fileName)
+                 .toPromise()
+                 .then(response => response.json())
+                 .catch(this.handleError);
+  }
 
-        
-    }
+  private handleError(error: any): Promise<any> {
+      console.error('An error occurred', error); // for demo purposes only
+      return Promise.reject(error.message || error);
+  }
 
-    getData(fileName: string): Promise<any> {
-        return this.http.get(fileName)
-                   .toPromise()
-                   .then(response => response.json())
-                   .catch(this.handleError);
-    }
-    private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
-    }
-
+  //Reads json
   ngOnInit() {
     this.height = 0;
         this.getData("active.json").then(data => {
@@ -71,7 +65,7 @@ export class HomeComponent implements OnInit {
                 this.breakdownAreas.sort();
                 this.getData("date.json").then(data => {
                     this.dateJson = data;
-                    
+
                     var lastUpdateDate = moment(this.dateJson, "YYYY-MM-DD HH-mm");
 
                     var duration = moment.duration(moment().diff(lastUpdateDate));
@@ -86,6 +80,7 @@ export class HomeComponent implements OnInit {
         });
   }
 
+  //Scroll when breakdown clicked
   scrollDown() {
     var div = document.getElementById('el');
     if (div.style.display == 'none') {
@@ -101,26 +96,4 @@ export class HomeComponent implements OnInit {
     document.getElementById('breakdown').scrollIntoView({behavior: 'smooth'});
     //this.height = this.height ? 0 : document.getElementById("el").scrollHeight;
   }
-
-  /**
-   * Handle the nameListService observable
-   */
- // getNames() {
-   // this.nameListService.get()
-     // .subscribe(
-       // names => this.names = names,
-       // error =>  this.errorMessage = <any>error
-      //);
- // }
-
-  /**
-   * Pushes a new name onto the names array
-   * @return {boolean} false to prevent default form submit behavior to refresh the page.
-   */
-  //addName(): boolean {
-    // TODO: implement nameListService.post
-   // this.names.push(this.newName);
-   // this.newName = '';
-   // return false;
- // }
 }

@@ -9,11 +9,16 @@ import { Component } from '@angular/core';
   templateUrl: 'events.component.html',
   styleUrls: ['events.component.css']
 })
+
+/**
+ * This class sets up the events page
+ */
 export class EventsComponent {
 
 	constructor(){
 	}
 
+	//Create events blocks and text. If current data, highlight
 	ngAfterViewInit(){
 		var today = new Date();
 		console.log(today);

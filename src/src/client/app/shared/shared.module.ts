@@ -15,6 +15,7 @@ import { NavbarComponent } from './navbar/index';
   exports: [NavbarComponent,
     CommonModule, FormsModule, RouterModule]
 })
+
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {

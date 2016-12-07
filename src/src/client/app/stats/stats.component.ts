@@ -13,8 +13,12 @@ declare var moment: any;
   styleUrls: ['stats.component.css'],
 })
 
+/**
+ * This class sets the data and charts
+ */
 export class StatsComponent implements OnInit {
 
+    //Time ranges for x-axis
     timesDetailMain: Object = {
       "Morning" : [moment("5:30AM", "HH:mmA"), moment("12:00PM", "HH:mmA")],
       "Afternoon" : [moment("12:00PM", "HH:mmA"),moment("5:00PM", "HH:mmA")],
@@ -22,7 +26,7 @@ export class StatsComponent implements OnInit {
       "Night" : [moment("9:00PM", "HH:mmA"),moment("11:59PM", "HH:mmA")]
     };
 
-
+    //Setup for filters
 	statsAreas: Array<string> = [];
 	selectedArea: string = this.statsAreas[0];
 
@@ -44,12 +48,14 @@ export class StatsComponent implements OnInit {
 	chartTitle: string = "";
     lineChart: any = null;
 
+    //Json reader
     getData(fileName: string): Promise<any> {
         return this.http.get(fileName)
                    .toPromise()
                    .then(response => response.json())
                    .catch(this.handleError);
     }
+
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // for demo purposes only
         return Promise.reject(error.message || error);
@@ -59,6 +65,7 @@ export class StatsComponent implements OnInit {
 
 	}
 
+    //Reads json data
 	ngOnInit() {
  		this.getData("crcJson.json").then(data => {
             this.crcJson = data;
@@ -87,6 +94,7 @@ export class StatsComponent implements OnInit {
 		}
 	}
 
+    //Swaps beteen Today and Month charts
     chartOnChange(event: any, type: any) {
         if (type == "Area"){
             this.selectedArea = event;
@@ -108,6 +116,7 @@ export class StatsComponent implements OnInit {
         }
 	}
 
+    //Creates chart for Today filter
 	createTodayChart(){
 		var graphInputData: Array<Object> = [];
         var graphPredData: Array<Object> = [];
@@ -225,6 +234,7 @@ export class StatsComponent implements OnInit {
       });
 	}
 
+    //Creates chart for month filter
 	createMonthChart(){
 		var graphInputData = {};
 		var graphInputArr = {
@@ -397,6 +407,8 @@ export class StatsComponent implements OnInit {
           }
       });
 	}
+
+    //Compares times for prediction and actual
 	private compareTimes(a,b){
 		if (a.x.isAfter(b.x)){return 1};
 		if (a.x.isBefore(b.x)){return -1};
